@@ -1,0 +1,200 @@
+/*#00a0dc*/
+/*#a3ddf2*/
+/*#ccecf8*/
+/*------------------------------------------------------------------*/
+/*------------------------ SIDE MENU BUTTON ------------------------*/
+/*------------------------------------------------------------------*/
+.button1{
+    -fx-background-color:  #fffeff;
+}
+.button1:hover{
+    -fx-background-color: #e7e7e7;
+}
+.button1:pressed{
+    -fx-background-color: #00a0dc;
+}
+.button1:focused{
+    -fx-background-color: #ccecf8;
+    -fx-border-color: #00a0dc;
+    -fx-border-width: 0px 0px 0px 3px;
+}
+
+/*------------------------------------------------------------------*/
+/*---------------------- SMALL FILTER BUTTON -----------------------*/
+/*------------------------------------------------------------------*/
+.button2{
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-font-weight: bold;
+}
+.button2:hover{
+    -fx-background-color: #ccecf8;
+}
+.button2:pressed{
+    -fx-background-color: #00a0dc;
+    -fx-text-fill: #FFFFFF;
+}
+.button2:focused{
+    -fx-background-color: #00a0dc;
+    -fx-text-fill: #FFFFFF;
+}
+/*------------------------------------------------------------------*/
+/*------------------------ CHECK IN BUTTON -------------------------*/
+/*------------------------------------------------------------------*/
+.button3{
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-border-color: #00a0dc;
+    -fx-text-fill: #00a0dc;
+}
+.button3:hover{
+    -fx-background-color: #e7e7e7;
+}
+.button3:pressed{
+    -fx-background-color: #00a0dc;
+    -fx-text-fill: #FFFFFF;
+}
+/*------------------------------------------------------------------*/
+/*------------------------- CANCER BUTTON --------------------------*/
+/*------------------------------------------------------------------*/
+.button4{
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-border-color: #d9390d;
+    -fx-text-fill: #d9390d;
+}
+.button4:hover{
+    -fx-background-color: #e7e7e7;
+}
+.button4:pressed{
+    -fx-background-color: #d9390d;
+    -fx-text-fill: #FFFFFF;
+}
+/*------------------------------------------------------------------*/
+/*----------------------- CHECK OUT BUTTON -------------------------*/
+/*------------------------------------------------------------------*/
+.button5{
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-border-color: #fc9540;
+    -fx-text-fill: #fc9540;
+}
+.button5:hover{
+    -fx-background-color: #e7e7e7;
+}
+.button5:pressed{
+    -fx-background-color: #fc9540;
+    -fx-text-fill: #FFFFFF;
+}
+/*------------------------------------------------------------------*/
+/*------------------------- SEARCH BUTTON --------------------------*/
+/*------------------------------------------------------------------*/
+.button6{
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-border-color: #43a047;
+    -fx-text-fill: #43a047;
+}
+.button6:hover{
+    -fx-background-color: #e7e7e7;
+}
+.button6:pressed{
+    -fx-background-color: #43a047;
+    -fx-text-fill: #FFFFFF;
+}
+
+/*------------------------------------------------------------------*/
+/*---------------------- COLOR FILTER BUTTON -----------------------*/
+/*------------------------------------------------------------------*/
+#button-green:hover, #button-green:focused{
+    -fx-background-color: #43a047;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0px 0px 0px 0px;
+}
+#button-blue:hover, #button-blue:focused{
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0px 0px 0px 0px;
+}
+#button-purple:hover, #button-purple:focused{
+    -fx-background-color: #9c27b0;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0px 0px 0px 0px;
+}
+#button-red:hover, #button-red:focused{
+    -fx-background-color: #d9390d;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0px 0px 0px 0px;
+}
+#button-orange:hover, #button-orange:focused{
+    -fx-background-color: #fc9540;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0px 0px 0px 0px;
+}
+#button-black:hover, #button-black:focused{
+    -fx-background-color: #000000;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0px 0px 0px 0px;
+}
+
+
+/*------------------------------------------------------------------*/
+/*--------------------------- TABLE VIEW ---------------------------*/
+/*------------------------------------------------------------------*/
+.table-view .column-header,
+.table-view .column-header-background .filler{
+    /*-fx-cell-size: 20;*/
+    -fx-background-color: #f0f0f0;
+}
+.table-view .column-header .label{
+    -fx-text-fill: #717171;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+.table-view .cell{
+    /*-fx-cell-size: 30;*/
+    -fx-alignment: CENTER;
+    -fx-text-fill: #000000;
+}
+.table-row-cell:selected{
+    -fx-background-color: #EBE9F6;
+}
+.table-row-cell:selected .text{
+    -fx-fill: #52438F;
+}
+
+
+/*------------------------------------------------------------------*/
+/*---------------------------- TAP PANE ----------------------------*/
+/*------------------------------------------------------------------*/
+.tab-pane .tab-header-area .tab-header-background{
+    -fx-opacity: 0;
+}
+.tab-pane{
+    -fx-tab-min-width: 90px;
+    -fx-tab-min-heigh: 30px;
+}
+.tab{
+    -fx-background-insets: 0 0 0 0, 0, 0;
+}
+.tab-pane .tab{
+    -fx-background-color: white;
+}
+.tab-pane .tab:selected{
+    -fx-background-color: white;
+    -fx-text-fill: #00a0dc;
+    -fx-border-color: #00a0dc;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+.tab .tab-label{
+    -fx-alignment: CENTER;
+    -fx-text-fill: #A5A9B4;
+}
+.tab:selected .tab-label{
+    -fx-alignment: CENTER;
+    -fx-text-fill: #00a0dc;
+}
