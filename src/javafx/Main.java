@@ -3,6 +3,7 @@ package javafx;
 import com.sun.deploy.util.FXLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.home.HomeController;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

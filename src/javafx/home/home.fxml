@@ -109,6 +109,16 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Pane prefHeight="463.0" prefWidth="180.0" />
+                  <Label fx:id="lbLiveTime" alignment="CENTER" prefHeight="47.0" prefWidth="180.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 100;" text="08:38:40">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="lbLiveDate" alignment="CENTER" layoutX="10.0" layoutY="783.0" prefHeight="32.0" prefWidth="180.0" text="Mon, 11 November 2022" />
                </children>
             </VBox>
          </left>
@@ -226,147 +236,6 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="pnRoomPrice" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
-                     <children>
-                        <TabPane prefHeight="200.0" prefWidth="200.0" stylesheets="@home.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <tabs>
-                            <Tab text="Phòng/Giường">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label layoutX="14.0" layoutY="14.0" text="Loại phòng" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="10.0" layoutY="37.0" prefHeight="200.0" prefWidth="454.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="37.0">
-                                            <columns>
-                                              <TableColumn prefWidth="75.0" text="Loại phòng" />
-                                              <TableColumn prefWidth="75.0" text="Mô tả" />
-                                                <TableColumn prefWidth="75.0" text="Số lượng" />
-                                                <TableColumn prefWidth="75.0" text="Chỉnh sửa" />
-                                                <TableColumn prefWidth="75.0" text="Xóa" />
-                                            </columns>
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                          <TextField layoutX="110.0" layoutY="247.0" prefHeight="25.0" prefWidth="120.0" promptText="Tên phòng" />
-                                          <Label layoutX="10.0" layoutY="251.0" text="Thêm loại phòng:" />
-                                          <TextField layoutX="236.0" layoutY="247.0" prefHeight="25.0" prefWidth="170.0" promptText="Mô tả" />
-                                          <Button layoutX="412.0" layoutY="247.0" mnemonicParsing="false" styleClass="button3" text="Thêm" />
-                                          <Label layoutX="10.0" layoutY="285.0" text="Tầng" AnchorPane.leftAnchor="10.0">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="10.0" layoutY="311.0" prefHeight="200.0" prefWidth="454.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="311.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Tên tầng" />
-                                                <TableColumn prefWidth="75.0" text="Mô tả" />
-                                                <TableColumn prefWidth="75.0" text="Chỉnh sửa" />
-                                                <TableColumn prefWidth="75.0" text="Xóa" />
-                                             </columns>
-                                          </TableView>
-                                          <Label layoutX="10.0" layoutY="525.0" text="Thêm tầng:" />
-                                          <Button layoutX="412.0" layoutY="520.0" mnemonicParsing="false" styleClass="button3" text="Thêm" />
-                                          <TextField layoutX="210.0" layoutY="521.0" prefHeight="25.0" prefWidth="196.0" promptText="Mô tả" />
-                                          <TextField layoutX="74.0" layoutY="521.0" prefHeight="25.0" prefWidth="131.0" promptText="Tên tầng" />
-                                          <Label layoutX="490.0" layoutY="10.0" text="Phòng" AnchorPane.leftAnchor="490.0" AnchorPane.rightAnchor="489.0" AnchorPane.topAnchor="10.0">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="490.0" layoutY="37.0" prefHeight="474.0" prefWidth="519.0" AnchorPane.leftAnchor="491.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="37.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Số phòng" />
-                                                <TableColumn prefWidth="75.0" text="Loại" />
-                                                <TableColumn prefWidth="75.0" text="Tầng" />
-                                                <TableColumn prefWidth="75.0" text="Chỉnh sửa" />
-                                                <TableColumn prefWidth="75.0" text="Xóa" />
-                                             </columns>
-                                          </TableView>
-                                          <Label layoutX="490.0" layoutY="525.0" text="Thêm phòng:" />
-                                          <TextField layoutX="567.0" layoutY="521.0" prefHeight="25.0" prefWidth="112.0" promptText="Số phòng" />
-                                          <ComboBox layoutX="685.0" layoutY="521.0" prefHeight="25.0" prefWidth="149.0" promptText="Loại phòng" />
-                                          <ComboBox layoutX="841.0" layoutY="521.0" prefHeight="25.0" prefWidth="114.0" promptText="Tầng" />
-                                          <Button layoutX="962.0" layoutY="520.0" mnemonicParsing="false" styleClass="button3" text="Thêm" />
-                                       </children>
-                                    </AnchorPane>
-                              </content>
-                            </Tab>
-                            <Tab text="Giá">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <TableView layoutX="14.0" layoutY="14.0" prefHeight="254.0" prefWidth="993.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                                            <columns>
-                                              <TableColumn prefWidth="75.0" text="Loại phòng" />
-                                              <TableColumn prefWidth="75.0" text="Giá giờ đầu tiên" />
-                                                <TableColumn prefWidth="75.0" text="Giá giờ tiếp theo" />
-                                                <TableColumn prefWidth="75.0" text="Giá ngày" />
-                                                <TableColumn prefWidth="75.0" text="Ph.CI sớm 1" />
-                                                <TableColumn prefWidth="75.0" text="Ph.CI sớm 2" />
-                                                <TableColumn prefWidth="75.0" text="Ph.CO muộn 1" />
-                                                <TableColumn prefWidth="75.0" text="Ph.CO muộn 2" />
-                                                <TableColumn prefWidth="75.0" text="Ph.CO muộn 3" />
-                                                <TableColumn prefWidth="75.0" text="Giá tháng" />
-                                            </columns>
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                          <Label layoutX="14.0" layoutY="276.0" text="* Tính &quot;giá ngày&quot; khi check in - check out trong khung giờ: 14:00 - 12:00" textFill="#656565">
-                                             <font>
-                                                <Font name="System Italic" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="22.0" layoutY="299.0" text="1. Trường hợp nhận phòng sớm: - Từ 5h - 9h: thêm 50% giá phòng (Phí check in sớm 2)" textFill="#656565">
-                                             <font>
-                                                <Font name="System Italic" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="192.0" layoutY="322.0" text="- Từ 9h - 14h: thêm 30% giá phòng (Phí check in sớm 1)" textFill="#656565">
-                                             <font>
-                                                <Font name="System Italic" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="22.0" layoutY="345.0" text="2. Trường hợp nhận phòng trễ: - Từ 5h - 9h: thêm 30% giá phòng (Phí check out muộn 1)" textFill="#656565">
-                                             <font>
-                                                <Font name="System Italic" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="192.0" layoutY="368.0" text="- Từ 15h - 18h: thêm 50% giá phòng (Phí check out muộn 2)" textFill="#656565" AnchorPane.leftAnchor="185.0">
-                                             <font>
-                                                <Font name="System Italic" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="185.0" layoutY="392.0" text="- Sau 18h: thêm 100% giá phòng (Phí check out muộn 3)" textFill="#656565">
-                                             <font>
-                                                <Font name="System Italic" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="14.0" layoutY="416.0" text="* Tính &quot;giá tháng&quot; khi khách ở đủ 30 ngày" textFill="#656565">
-                                             <font>
-                                                <Font name="System Italic" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Button layoutX="958.0" layoutY="272.0" mnemonicParsing="false" styleClass="button3" text="Sửa giá" AnchorPane.rightAnchor="10.0" />
-                                          <Label layoutX="839.0" layoutY="277.0" text="Chọn loại phòng để:" />
-                                       </children>
-                                    </AnchorPane>
-                              </content>
-                            </Tab>
-                          </tabs>
-                        </TabPane>
-                     </children>
-                  </AnchorPane>
                   <AnchorPane fx:id="pnCustomerList" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
                      <children>
                         <Label layoutX="14.0" layoutY="8.0" text="Danh sách khách">
@@ -398,108 +267,6 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane fx:id="pnCreateReservation" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
-                     <children>
-                        <DatePicker layoutX="115.0" layoutY="8.0" />
-                        <Label layoutX="14.0" layoutY="12.0" text="Tìm kiếm từ ngày:" AnchorPane.leftAnchor="14.0" />
-                        <TextField alignment="CENTER" layoutX="297.0" layoutY="8.0" prefHeight="25.0" prefWidth="57.0" promptText="hh:mm" />
-                        <Label layoutX="362.0" layoutY="12.0" text="đến" />
-                        <DatePicker layoutX="390.0" layoutY="8.0" />
-                        <TextField alignment="CENTER" layoutX="570.0" layoutY="8.0" prefHeight="25.0" prefWidth="57.0" promptText="hh:mm" />
-                        <Button layoutX="634.0" layoutY="8.0" mnemonicParsing="false" styleClass="button6" stylesheets="@home.css" text="Tìm kiếm" />
-                        <Button layoutX="705.0" layoutY="8.0" mnemonicParsing="false" styleClass="button4" stylesheets="@home.css">
-                           <graphic>
-                              <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../icon/cancel.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <GridPane layoutX="9.0" layoutY="42.0" prefHeight="165.0" prefWidth="730.0" style="-fx-background-color: #ffffff; -fx-background-radius: 5px;">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label alignment="CENTER" layoutX="10.0" layoutY="16.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Số phòng còn lại" GridPane.columnIndex="1">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER" layoutX="193.0" layoutY="10.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Số phòng còn lại">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Số phòng cần đặt" GridPane.columnIndex="2">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Giá mặc định" GridPane.columnIndex="3">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Phòng đơn" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER" layoutX="10.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Phòng đôi" GridPane.rowIndex="2" />
-                              <Label alignment="CENTER" layoutX="10.0" layoutY="72.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Phòng 2 giường" GridPane.rowIndex="3" />
-                              <Label alignment="CENTER" layoutX="10.0" layoutY="103.0" prefHeight="40.0" prefWidth="183.0" text="Phòng VIP" GridPane.rowIndex="4" />
-                              <Label alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label alignment="CENTER" layoutX="193.0" layoutY="72.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="5" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label alignment="CENTER" layoutX="10.0" layoutY="133.0" prefHeight="40.0" prefWidth="183.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                 <children>
-                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="60.0" right="60.0" />
-                                 </padding>
-                              </StackPane>
-                              <StackPane layoutX="376.0" layoutY="41.0" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                 <children>
-                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="60.0" right="60.0" />
-                                 </padding>
-                              </StackPane>
-                              <StackPane layoutX="376.0" layoutY="72.0" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                                 <children>
-                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="60.0" right="60.0" />
-                                 </padding>
-                              </StackPane>
-                              <StackPane layoutX="376.0" layoutY="103.0" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                                 <children>
-                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="60.0" right="60.0" />
-                                 </padding>
-                              </StackPane>
-                              <Label alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER" layoutX="558.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                              <Label alignment="CENTER" layoutX="558.0" layoutY="72.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                              <Label alignment="CENTER" layoutX="558.0" layoutY="103.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                           </children>
-                        </GridPane>
-                        <Button layoutX="336.0" layoutY="219.0" mnemonicParsing="false" styleClass="button3" stylesheets="@home.css" text="Đặt phòng" />
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="pnRoomPlan" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
@@ -659,6 +426,262 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="pnRoomPrice" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
+                     <children>
+                        <TabPane prefHeight="200.0" prefWidth="200.0" stylesheets="@home.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <tabs>
+                            <Tab text="Phòng/Giường">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="14.0" text="Loại phòng" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutX="10.0" layoutY="37.0" prefHeight="200.0" prefWidth="454.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="37.0">
+                                            <columns>
+                                              <TableColumn prefWidth="75.0" text="Loại phòng" />
+                                              <TableColumn prefWidth="75.0" text="Mô tả" />
+                                                <TableColumn prefWidth="75.0" text="Số lượng" />
+                                                <TableColumn prefWidth="75.0" text="Chỉnh sửa" />
+                                                <TableColumn prefWidth="75.0" text="Xóa" />
+                                            </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
+                                          <TextField layoutX="110.0" layoutY="247.0" prefHeight="25.0" prefWidth="120.0" promptText="Tên phòng" />
+                                          <Label layoutX="10.0" layoutY="251.0" text="Thêm loại phòng:" />
+                                          <TextField layoutX="236.0" layoutY="247.0" prefHeight="25.0" prefWidth="170.0" promptText="Mô tả" />
+                                          <Button layoutX="412.0" layoutY="247.0" mnemonicParsing="false" styleClass="button3" text="Thêm" />
+                                          <Label layoutX="10.0" layoutY="285.0" text="Tầng" AnchorPane.leftAnchor="10.0">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutX="10.0" layoutY="311.0" prefHeight="200.0" prefWidth="454.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="311.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                             <columns>
+                                                <TableColumn prefWidth="75.0" text="Tên tầng" />
+                                                <TableColumn prefWidth="75.0" text="Mô tả" />
+                                                <TableColumn prefWidth="75.0" text="Chỉnh sửa" />
+                                                <TableColumn prefWidth="75.0" text="Xóa" />
+                                             </columns>
+                                          </TableView>
+                                          <Label layoutX="10.0" layoutY="525.0" text="Thêm tầng:" />
+                                          <Button layoutX="412.0" layoutY="520.0" mnemonicParsing="false" styleClass="button3" text="Thêm" />
+                                          <TextField layoutX="210.0" layoutY="521.0" prefHeight="25.0" prefWidth="196.0" promptText="Mô tả" />
+                                          <TextField layoutX="74.0" layoutY="521.0" prefHeight="25.0" prefWidth="131.0" promptText="Tên tầng" />
+                                          <Label layoutX="490.0" layoutY="10.0" text="Phòng" AnchorPane.leftAnchor="490.0" AnchorPane.rightAnchor="489.0" AnchorPane.topAnchor="10.0">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutX="490.0" layoutY="37.0" prefHeight="474.0" prefWidth="519.0" AnchorPane.leftAnchor="491.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="37.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                             <columns>
+                                                <TableColumn prefWidth="75.0" text="Số phòng" />
+                                                <TableColumn prefWidth="75.0" text="Loại" />
+                                                <TableColumn prefWidth="75.0" text="Tầng" />
+                                                <TableColumn prefWidth="75.0" text="Chỉnh sửa" />
+                                                <TableColumn prefWidth="75.0" text="Xóa" />
+                                             </columns>
+                                          </TableView>
+                                          <Label layoutX="490.0" layoutY="525.0" text="Thêm phòng:" />
+                                          <TextField layoutX="567.0" layoutY="521.0" prefHeight="25.0" prefWidth="112.0" promptText="Số phòng" />
+                                          <ComboBox layoutX="685.0" layoutY="521.0" prefHeight="25.0" prefWidth="149.0" promptText="Loại phòng" />
+                                          <ComboBox layoutX="841.0" layoutY="521.0" prefHeight="25.0" prefWidth="114.0" promptText="Tầng" />
+                                          <Button layoutX="962.0" layoutY="520.0" mnemonicParsing="false" styleClass="button3" text="Thêm" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="Giá">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TableView layoutX="14.0" layoutY="14.0" prefHeight="254.0" prefWidth="993.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                                            <columns>
+                                              <TableColumn prefWidth="75.0" text="Loại phòng" />
+                                              <TableColumn prefWidth="75.0" text="Giá giờ đầu tiên" />
+                                                <TableColumn prefWidth="75.0" text="Giá giờ tiếp theo" />
+                                                <TableColumn prefWidth="75.0" text="Giá ngày" />
+                                                <TableColumn prefWidth="75.0" text="Ph.CI sớm 1" />
+                                                <TableColumn prefWidth="75.0" text="Ph.CI sớm 2" />
+                                                <TableColumn prefWidth="75.0" text="Ph.CO muộn 1" />
+                                                <TableColumn prefWidth="75.0" text="Ph.CO muộn 2" />
+                                                <TableColumn prefWidth="75.0" text="Ph.CO muộn 3" />
+                                                <TableColumn prefWidth="75.0" text="Giá tháng" />
+                                            </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
+                                          <Label layoutX="14.0" layoutY="276.0" text="* Tính &quot;giá ngày&quot; khi check in - check out trong khung giờ: 14:00 - 12:00" textFill="#656565">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="22.0" layoutY="299.0" text="1. Trường hợp nhận phòng sớm: - Từ 5h - 9h: thêm 50% giá phòng (Phí check in sớm 2)" textFill="#656565">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="192.0" layoutY="322.0" text="- Từ 9h - 14h: thêm 30% giá phòng (Phí check in sớm 1)" textFill="#656565">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="22.0" layoutY="345.0" text="2. Trường hợp nhận phòng trễ: - Từ 5h - 9h: thêm 30% giá phòng (Phí check out muộn 1)" textFill="#656565">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="192.0" layoutY="368.0" text="- Từ 15h - 18h: thêm 50% giá phòng (Phí check out muộn 2)" textFill="#656565" AnchorPane.leftAnchor="185.0">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="185.0" layoutY="392.0" text="- Sau 18h: thêm 100% giá phòng (Phí check out muộn 3)" textFill="#656565">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="14.0" layoutY="416.0" text="* Tính &quot;giá tháng&quot; khi khách ở đủ 30 ngày" textFill="#656565">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Button layoutX="958.0" layoutY="272.0" mnemonicParsing="false" styleClass="button3" text="Sửa giá" AnchorPane.rightAnchor="10.0" />
+                                          <Label layoutX="839.0" layoutY="277.0" text="Chọn loại phòng để:" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
+                     <children>
+                        <DatePicker fx:id="dpBookingDateStart" layoutX="115.0" layoutY="8.0" />
+                        <Label layoutX="14.0" layoutY="12.0" text="Tìm kiếm từ ngày:" AnchorPane.leftAnchor="14.0" />
+                        <TextField fx:id="txtBookingHourStart" alignment="CENTER" layoutX="297.0" layoutY="8.0" prefHeight="25.0" prefWidth="57.0" promptText="hh:mm" />
+                        <Label layoutX="362.0" layoutY="12.0" text="đến" />
+                        <DatePicker fx:id="dpBookingDateEnd" layoutX="390.0" layoutY="8.0" />
+                        <TextField fx:id="txtBookingHourEnd" alignment="CENTER" layoutX="570.0" layoutY="8.0" prefHeight="25.0" prefWidth="57.0" promptText="hh:mm" />
+                        <Button layoutX="634.0" layoutY="8.0" mnemonicParsing="false" onAction="#searchRoomsAvailable" styleClass="button6" stylesheets="@home.css" text="Tìm kiếm" />
+                        <Button layoutX="705.0" layoutY="8.0" mnemonicParsing="false" onAction="#clearRoomAvailable" styleClass="button4" stylesheets="@home.css">
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../icon/cancel.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <GridPane layoutX="9.0" layoutY="42.0" prefHeight="165.0" prefWidth="730.0" style="-fx-background-color: #ffffff; -fx-background-radius: 5px;">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label alignment="CENTER" layoutX="10.0" layoutY="16.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Số phòng còn lại" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" layoutX="193.0" layoutY="10.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Số phòng còn lại">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Số phòng cần đặt" GridPane.columnIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="43.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Giá mặc định" GridPane.columnIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Phòng đơn" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" layoutX="10.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Phòng đôi" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER" layoutX="10.0" layoutY="72.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="Phòng 2 giường" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER" layoutX="10.0" layoutY="103.0" prefHeight="40.0" prefWidth="183.0" text="Phòng VIP" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER" layoutX="193.0" layoutY="72.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="5" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER" layoutX="10.0" layoutY="133.0" prefHeight="40.0" prefWidth="183.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                 <children>
+                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="60.0" right="60.0" />
+                                 </padding>
+                              </StackPane>
+                              <StackPane layoutX="376.0" layoutY="41.0" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                 <children>
+                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="60.0" right="60.0" />
+                                 </padding>
+                              </StackPane>
+                              <StackPane layoutX="376.0" layoutY="72.0" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                 <children>
+                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="60.0" right="60.0" />
+                                 </padding>
+                              </StackPane>
+                              <StackPane layoutX="376.0" layoutY="103.0" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                 <children>
+                                    <TextField alignment="CENTER" prefHeight="25.0" prefWidth="89.0" text="0" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="60.0" right="60.0" />
+                                 </padding>
+                              </StackPane>
+                              <Label alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" layoutX="558.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER" layoutX="558.0" layoutY="72.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER" layoutX="558.0" layoutY="103.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                           </children>
+                        </GridPane>
+                        <Button layoutX="336.0" layoutY="219.0" mnemonicParsing="false" onAction="#goToBookingWindow" styleClass="button3" stylesheets="@home.css" text="Đặt phòng" />
+                        <TableView fx:id="tbvRoomsAvailable" layoutX="11.0" layoutY="255.0" prefHeight="535.0" prefWidth="730.0" stylesheets="@home.css" AnchorPane.leftAnchor="14.0">
+                          <columns>
+                            <TableColumn fx:id="roomAvailableSelectRoomCol" prefWidth="75.0" text="Chọn phòng" />
+                            <TableColumn fx:id="roomAvailableRoomNumberCol" prefWidth="75.0" text="Số phòng" />
+                              <TableColumn fx:id="roomAvailableRoomTypeCol" prefWidth="75.0" text="Loại phòng" />
+                              <TableColumn fx:id="roomAvailableFloorCol" prefWidth="75.0" text="Tầng" />
+                              <TableColumn fx:id="roomAvailableDayPriceCol" prefWidth="75.0" text="Giá ngày" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <ListView fx:id="lvRoomsBooked" layoutX="755.0" layoutY="42.0" prefHeight="308.0" prefWidth="260.0" />
                      </children>
                   </AnchorPane>
                </children></StackPane>

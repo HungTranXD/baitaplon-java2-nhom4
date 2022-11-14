@@ -1,16 +1,25 @@
 package database;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Connector {
-    public final static String connectionString = "jdbc:mysql://localhost:3306/t2204m-java1?useUnicode=yes&characterEncoding=UTF-8";
+    public final static String connectionString = "jdbc:mysql://localhost:3306/eHotel?useUnicode=yes&characterEncoding=UTF-8";
     public final static String user = "root";
     public final static String pwd = "";
 
     private Connection conn;
+    private static Connector instance;
 
-    public Connector() throws Exception{
+    public static Connector getInstance() throws Exception {
+        if (instance == null) {
+            instance = new Connector();
+        }
+        return instance;
+    }
+
+    private Connector() throws Exception{
             Class.forName("com.mysql.jdbc.Driver");
             this.conn = DriverManager.getConnection(connectionString, user, pwd);
     }
@@ -34,18 +43,25 @@ public class Connector {
         return this.conn.prepareStatement(sql);
     }
 
-    public ResultSet query(String sql, ArrayList parameters) throws Exception{
-        PreparedStatement stt = this.getPreparedStatement(sql);
-        for(int i=0;i<parameters.size();i++){
-            if(parameters.get(i) instanceof String){
-                stt.setString(i+1,(String)parameters.get(i));
-            }else if(parameters.get(i) instanceof Integer){
-                stt.setInt(i+1,(int) parameters.get(i));
-            }else if(parameters.get(i) instanceof Double){
-                stt.setDouble(i+1,(double) parameters.get(i));
+    public ResultSet query(String sql, ArrayList parameters){
+        try {
+            PreparedStatement stt = this.getPreparedStatement(sql);
+            for(int i=0;i<parameters.size();i++){
+                if(parameters.get(i) instanceof String){
+                    stt.setString(i+1,(String)parameters.get(i));
+                }else if(parameters.get(i) instanceof Integer){
+                    stt.setInt(i+1,(int) parameters.get(i));
+                }else if(parameters.get(i) instanceof Double){
+                    stt.setDouble(i+1,(double) parameters.get(i));
+                } else if (parameters.get(i) instanceof LocalDateTime) {
+                    stt.setString(i+1,(String)parameters.get(i).toString());
+                }
             }
+            return stt.executeQuery();
+        } catch (Exception e) {
+            System.out.println("Error in query(): " + e);
         }
-        return stt.executeQuery();
+        return null;
     }
 
     public boolean execute(String sql, ArrayList parameters) throws Exception{
