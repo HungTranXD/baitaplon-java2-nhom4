@@ -4,15 +4,15 @@ import database.Connector;
 import entities.Booking;
 import entities.Customer;
 import entities.Room;
-import interfaces.IBookingRepository;
-import interfaces.ICustomerRepository;
+import entities.RoomBooking;
+import interfaces.IRepository;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class BookingRepository implements IBookingRepository {
+public class BookingRepository implements IRepository<Booking> {
     @Override
     public ArrayList<Booking> readAll() {
         ArrayList<Booking> ls = new ArrayList<>();
@@ -48,7 +48,7 @@ public class BookingRepository implements IBookingRepository {
 
                 //Get all rooms booked in this Booking
                 RoomRepository rr = new RoomRepository();
-                ArrayList<Room> roomsBooked = rr.findByBookingId(id);
+                ArrayList<RoomBooking> roomsBooked = rr.findByBookingId(id);
 
                 ls.add(new Booking(id, timeBooked, checkinDate, checkoutDate, actualCheckinDate, actualCheckoutDate, customerBooked, paymentId, paymentMethod, paymentTotal, paymentPrepaid, paymentRemain, roomsBooked));
             }
@@ -116,11 +116,12 @@ public class BookingRepository implements IBookingRepository {
 
                     if(createPaymentFlag) {
                         //Insert new room_booking into room_booking table in database
-                        for (Room r: b.getRoomsBooked()) {
-                            String sql_txt_4 = "INSERT INTO nhom4_room_booking (booking_id, room_id) VALUES (?,?)";
+                        for (RoomBooking rb: b.getRoomsBooked()) {
+                            String sql_txt_4 = "INSERT INTO nhom4_room_booking (booking_id, room_id, sub_payment) VALUES (?,?,?)";
                             ArrayList parameters_4 = new ArrayList<>();
                             parameters_4.add(retrievedBookingId);
-                            parameters_4.add(r.getId());
+                            parameters_4.add(rb.getId());
+                            parameters_4.add(rb.getSubPayment());
                             Boolean createRoomBookingFlag = connector.execute(sql_txt_4,parameters_4);
                             if (!createRoomBookingFlag) return false;
                         }
@@ -210,7 +211,7 @@ public class BookingRepository implements IBookingRepository {
 
                 //Get all rooms booked in this Booking
                 RoomRepository rr = new RoomRepository();
-                ArrayList<Room> roomsBooked = rr.findByBookingId(id);
+                ArrayList<RoomBooking> roomsBooked = rr.findByBookingId(id);
 
                 Booking b = new Booking(id, timeBooked, checkinDate, checkoutDate, actualCheckinDate, actualCheckoutDate, customerBooked, paymentId, paymentMethod, paymentTotal, paymentPrepaid, paymentRemain, roomsBooked);
                 return b;

@@ -2,13 +2,14 @@ package impls;
 
 import database.Connector;
 import entities.Room;
-import interfaces.IRoomRepository;
+import entities.RoomBooking;
+import interfaces.IRepository;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class RoomRepository implements IRoomRepository {
+public class RoomRepository implements IRepository<Room> {
     @Override
     public ArrayList<Room> readAll() {
         ArrayList<Room> ls = new ArrayList<>();
@@ -31,9 +32,7 @@ public class RoomRepository implements IRoomRepository {
                    rs.getDouble("early_checkin_fee_1"),
                    rs.getDouble("early_checkin_fee_2"),
                    rs.getDouble("late_checkout_fee_1"),
-                   rs.getDouble("late_checkout_fee_2"),
-                   rs.getDouble("late_checkout_fee_3"),
-                   rs.getDouble("month_price")
+                   rs.getDouble("late_checkout_fee_2")
                 ));
             }
         } catch (Exception e) {
@@ -112,9 +111,7 @@ public class RoomRepository implements IRoomRepository {
                     rs.getDouble("early_checkin_fee_1"),
                     rs.getDouble("early_checkin_fee_2"),
                     rs.getDouble("late_checkout_fee_1"),
-                    rs.getDouble("late_checkout_fee_2"),
-                    rs.getDouble("late_checkout_fee_3"),
-                    rs.getDouble("month_price")
+                    rs.getDouble("late_checkout_fee_2")
                 );
                 return r;
             }
@@ -124,7 +121,7 @@ public class RoomRepository implements IRoomRepository {
         return null;
     }
 
-    @Override
+
     public ArrayList<Room> findByDate(LocalDateTime checkin, LocalDateTime checkout) {
         ArrayList<Room> ls = new ArrayList<>();
         try{
@@ -149,9 +146,7 @@ public class RoomRepository implements IRoomRepository {
                     rs.getDouble("early_checkin_fee_1"),
                     rs.getDouble("early_checkin_fee_2"),
                     rs.getDouble("late_checkout_fee_1"),
-                    rs.getDouble("late_checkout_fee_2"),
-                    rs.getDouble("late_checkout_fee_3"),
-                    rs.getDouble("month_price")
+                    rs.getDouble("late_checkout_fee_2")
                 ));
             }
         } catch (Exception e) {
@@ -160,17 +155,16 @@ public class RoomRepository implements IRoomRepository {
         return ls;
     }
 
-    @Override
-    public ArrayList<Room> findByBookingId(int bookingId) {
-        ArrayList<Room> ls = new ArrayList<>();
+    public ArrayList<RoomBooking> findByBookingId(int bookingId) {
+        ArrayList<RoomBooking> ls = new ArrayList<>();
         try{
             Connector connector = Connector.getInstance();
-            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id WHERE r.room_id IN (SELECT room_id FROM nhom4_room_booking WHERE booking_id = ?);";
+            String sql_txt = "SELECT * FROM nhom4_room_booking rb LEFT JOIN nhom4_room r ON rb.room_id = r.room_id LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id WHERE booking_id = ?;";
             ArrayList parameters = new ArrayList<>();
             parameters.add(bookingId);
             ResultSet rs = connector.query(sql_txt, parameters);
             while (rs.next()) {
-                ls.add(new Room(
+                ls.add(new RoomBooking(
                     rs.getInt("room_id"),
                     rs.getString("room_number"),
                     rs.getInt("floor_id"),
@@ -185,8 +179,7 @@ public class RoomRepository implements IRoomRepository {
                     rs.getDouble("early_checkin_fee_2"),
                     rs.getDouble("late_checkout_fee_1"),
                     rs.getDouble("late_checkout_fee_2"),
-                    rs.getDouble("late_checkout_fee_3"),
-                    rs.getDouble("month_price")
+                    rs.getDouble("sub_payment")
                 ));
             }
         } catch (Exception e) {

@@ -2,13 +2,13 @@ package impls;
 
 import database.Connector;
 import entities.Customer;
-import interfaces.ICustomerRepository;
+import interfaces.IRepository;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class CustomerRepository implements ICustomerRepository {
+public class CustomerRepository implements IRepository<Customer> {
     @Override
     public ArrayList<Customer> readAll() {
         ArrayList<Customer> ls = new ArrayList<>();
@@ -120,7 +120,6 @@ public class CustomerRepository implements ICustomerRepository {
         return null;
     }
 
-    @Override
     public Customer findByIdNumber(String idnumber) {
         try{
             Connector connector = Connector.getInstance();

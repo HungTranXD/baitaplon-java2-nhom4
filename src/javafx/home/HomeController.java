@@ -1,6 +1,9 @@
 package javafx.home;
 
 import entities.Room;
+import entities.RoomBooking;
+import enums.RepoType;
+import factory.Factory;
 import impls.RoomRepository;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
@@ -108,7 +111,7 @@ public class HomeController implements Initializable {
     private ObservableList<Room> availableRooms = FXCollections.observableArrayList();
 
     @FXML
-    private ListView<Room> lvRoomsBooked;
+    private ListView<RoomBooking> lvRoomsBooked;
 
 
 
@@ -214,7 +217,7 @@ public class HomeController implements Initializable {
         clearRoomAvailable(actionEvent);
         lvRoomsBooked.getItems().clear();
         try {
-            RoomRepository rr = new RoomRepository();
+            RoomRepository rr = (RoomRepository) Factory.createRepository(RepoType.ROOM);
 
             LocalDate checkinDate = dpBookingDateStart.getValue();
             LocalTime checkinTime = LocalTime.parse(txtBookingHourStart.getText());
@@ -246,6 +249,11 @@ public class HomeController implements Initializable {
         CreateBookingController.checkinTime = LocalTime.parse(txtBookingHourStart.getText());
         CreateBookingController.checkoutDate = dpBookingDateEnd.getValue();
         CreateBookingController.checkoutTime = LocalTime.parse(txtBookingHourEnd.getText());
+
+        //Calculate subPayment for each room booked
+        for(RoomBooking rb: roomsBooked) {
+            rb.setSubPayment(100.0);
+        }
 
         CreateBookingController.display();
     }

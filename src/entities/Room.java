@@ -18,8 +18,6 @@ public class Room {
     private Double earlyCheckinFee2;
     private Double lateCheckoutFee1;
     private Double lateCheckoutFee2;
-    private Double lateCheckoutFee3;
-    private Double monthPrice;
     private CheckBox cbSelectRoom;
 
     /* -------------------------------------------------------------- */
@@ -28,7 +26,7 @@ public class Room {
     public Room() {
     }
 
-    public Room(Integer id, String number, Integer floorId, String floorName, Integer type_id, String type, String typeDescription, Double firstHourPrice, Double nextHourPrice, Double dayPrice, Double earlyCheckinFee1, Double earlyCheckinFee2, Double lateCheckoutFee1, Double lateCheckoutFee2, Double lateCheckoutFee3, Double monthPrice) {
+    public Room(Integer id, String number, Integer floorId, String floorName, Integer type_id, String type, String typeDescription, Double firstHourPrice, Double nextHourPrice, Double dayPrice, Double earlyCheckinFee1, Double earlyCheckinFee2, Double lateCheckoutFee1, Double lateCheckoutFee2) {
         this.id = id;
         this.number = number;
         this.floorId = floorId;
@@ -43,14 +41,15 @@ public class Room {
         this.earlyCheckinFee2 = earlyCheckinFee2;
         this.lateCheckoutFee1 = lateCheckoutFee1;
         this.lateCheckoutFee2 = lateCheckoutFee2;
-        this.lateCheckoutFee3 = lateCheckoutFee3;
-        this.monthPrice = monthPrice;
         this.cbSelectRoom = new CheckBox();
+
+
         cbSelectRoom.setOnAction(event -> {
+            RoomBooking rb = new RoomBooking(id, number, floorId, floorName, type_id, type, typeDescription, firstHourPrice, nextHourPrice, dayPrice, earlyCheckinFee1, earlyCheckinFee2, lateCheckoutFee1, lateCheckoutFee2, null);
             if(cbSelectRoom.isSelected()) {
-                CreateBookingController.roomsBooked.add(this);
+                CreateBookingController.roomsBooked.add(rb);
             } else {
-                CreateBookingController.roomsBooked.remove(this);
+                CreateBookingController.roomsBooked.remove(rb);
             }
         });
 
@@ -171,21 +170,6 @@ public class Room {
         this.lateCheckoutFee2 = lateCheckoutFee2;
     }
 
-    public Double getLateCheckoutFee3() {
-        return lateCheckoutFee3;
-    }
-
-    public void setLateCheckoutFee3(Double lateCheckoutFee3) {
-        this.lateCheckoutFee3 = lateCheckoutFee3;
-    }
-
-    public Double getMonthPrice() {
-        return monthPrice;
-    }
-
-    public void setMonthPrice(Double monthPrice) {
-        this.monthPrice = monthPrice;
-    }
 
     public CheckBox getCbSelectRoom() {
         return cbSelectRoom;

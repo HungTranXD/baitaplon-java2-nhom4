@@ -1,6 +1,7 @@
 package javafx.createBooking;
 
 import entities.Room;
+import entities.RoomBooking;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,23 +38,23 @@ public class CreateBookingController implements Initializable {
     private TextField txtBookingHourEnd;
 
     @FXML
-    private TableView<Room> tbvRoomsBooked;
+    private TableView<RoomBooking> tbvRoomsBooked;
 
     @FXML
-    private TableColumn<Room, String> roomBookedNumberCol;
+    private TableColumn<RoomBooking, String> roomBookedNumberCol;
 
     @FXML
-    private TableColumn<Room, String> roomBookedTypeCol;
+    private TableColumn<RoomBooking, String> roomBookedTypeCol;
 
     @FXML
-    private TableColumn<Room, Double> roomBookedMoneyCol;
+    private TableColumn<RoomBooking, Double> roomBookedMoneyCol;
 
     public static LocalDate checkinDate;
     public static LocalTime checkinTime;
     public static LocalDate checkoutDate;
     public static LocalTime checkoutTime;
 
-    public static ObservableList<Room> roomsBooked = FXCollections.observableArrayList();
+    public static ObservableList<RoomBooking> roomsBooked = FXCollections.observableArrayList();
 
     /* ----------------------------------------------------------- */
     /* ---------------------- Customer info ---------------------- */
@@ -108,6 +109,7 @@ public class CreateBookingController implements Initializable {
 
         roomBookedNumberCol.setCellValueFactory(new PropertyValueFactory<>("number"));
         roomBookedTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        roomBookedMoneyCol.setCellValueFactory(new PropertyValueFactory<>("subPayment"));
         tbvRoomsBooked.setItems(roomsBooked);
     }
 

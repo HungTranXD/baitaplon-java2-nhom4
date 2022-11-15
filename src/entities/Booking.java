@@ -1,6 +1,9 @@
 package entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Booking {
@@ -16,7 +19,7 @@ public class Booking {
     private Double paymentTotal;
     private Double paymentPrepaid;
     private Double paymentRemain;
-    private ArrayList<Room> roomsBooked;
+    private ArrayList<RoomBooking> roomsBooked;
 
     /* -------------------------------------------------------------- */
     /* ------------------------ CONSTRUCTORS ------------------------ */
@@ -24,7 +27,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(Integer id, LocalDateTime timeBooked, LocalDateTime checkinDate, LocalDateTime checkoutDate, LocalDateTime actualCheckinDate, LocalDateTime actualCheckoutDate, Customer customerBooked, Integer paymentId, String paymentMethod, Double paymentTotal, Double paymentPrepaid, Double paymentRemain, ArrayList<Room> roomsBooked) {
+    public Booking(Integer id, LocalDateTime timeBooked, LocalDateTime checkinDate, LocalDateTime checkoutDate, LocalDateTime actualCheckinDate, LocalDateTime actualCheckoutDate, Customer customerBooked, Integer paymentId, String paymentMethod, Double paymentTotal, Double paymentPrepaid, Double paymentRemain, ArrayList<RoomBooking> roomsBooked) {
         this.id = id;
         this.timeBooked = timeBooked;
         this.checkinDate = checkinDate;
@@ -140,11 +143,86 @@ public class Booking {
         this.paymentRemain = paymentRemain;
     }
 
-    public ArrayList<Room> getRoomsBooked() {
+    public ArrayList<RoomBooking> getRoomsBooked() {
         return roomsBooked;
     }
 
-    public void setRoomsBooked(ArrayList<Room> roomsBooked) {
+    public void setRoomsBooked(ArrayList<RoomBooking> roomsBooked) {
         this.roomsBooked = roomsBooked;
+    }
+
+    //Calculate subPayment for each room in ArrayList roomBooked
+    public void calculateSubPayment() {
+        for(RoomBooking rb: getRoomsBooked()) {
+            Double firstHourPrice = rb.getFirstHourPrice();
+            Double nextHourPrice = rb.getNextHourPrice();
+            Double dayPrice = rb.getDayPrice();
+            Double earlyCheckinFee1 = rb.getEarlyCheckinFee1();
+            Double earlyCheckinFee2 = rb.getEarlyCheckinFee2();
+            Double lateCheckoutFee1 = rb.getLateCheckoutFee1();
+            Double lateCheckoutFee2 = rb.getLateCheckoutFee2();
+
+            LocalDate ckinDate = getCheckinDate().toLocalDate();
+            LocalTime ckinTime = getCheckinDate().toLocalTime();
+
+            LocalDate ckoutDate = getCheckoutDate().toLocalDate();
+            LocalTime ckoutTime = getCheckoutDate().toLocalTime();
+
+
+            LocalTime _0h = LocalTime.of(0,0);
+            LocalTime _5h = LocalTime.of(5,0);
+            LocalTime _9h = LocalTime.of(9,0);
+            LocalTime _12h = LocalTime.of(12,0);
+            LocalTime _14h = LocalTime.of(14,0);
+            LocalTime _18h = LocalTime.of(18,0);
+            LocalTime _23h59 = LocalTime.of(23,59, 59);
+
+
+            if (ckinDate.equals(ckoutDate)) {
+                if (ckinTime.isAfter(_0h) && ckinTime.isBefore(_5h)) {
+                    if (ckoutTime.isAfter(_0h) && ckoutTime.isBefore(_12h)) {
+                        rb.setSubPayment(rb.getDayPrice());
+                    } else if (ckoutTime.isBefore(_18h)) {
+                        long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
+                        rb.setSubPayment(rb.getDayPrice() + (hoursLate < 3 ? rb.getLateCheckoutFee1() : rb.getLateCheckoutFee2()));
+                    } else {
+                        rb.setSubPayment(2.0 * rb.getDayPrice());
+                    }
+                } else if (ckinTime.isBefore(_14h)) {
+                    if (ckoutTime.isAfter(_0h) && ckoutTime.isBefore(_12h)) {
+                        rb.setSubPayment(rb.getDayPrice());
+                    } else if (ckoutTime.isBefore(_14h)) {
+                        long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
+                        rb.setSubPayment(rb.getDayPrice() + (hoursLate < 3 ? rb.getLateCheckoutFee1() : rb.getLateCheckoutFee2()));
+                    } else {
+                        long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
+                        rb.setSubPayment(rb.getDayPrice() + (hoursEarly < 5 ? rb.getEarlyCheckinFee1() : rb.getEarlyCheckinFee2()));
+                    }
+                } else {
+                    rb.setSubPayment(rb.getDayPrice());
+                }
+            } else if (ckoutDate.isAfter(ckinDate)) {
+                long dayBetween = ChronoUnit.DAYS.between(ckinDate, ckoutDate);
+                if (ckinTime.isAfter(_0h) && ckinTime.isBefore(_5h)) {
+                    if (ckoutTime.isAfter(_0h) && ckoutTime.isBefore(_12h)) {
+                        rb.setSubPayment((dayBetween + 1) * rb.getDayPrice());
+                    } else if (ckoutTime.isBefore(_18h)) {
+                        long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
+                        rb.setSubPayment((dayBetween + 1) * rb.getDayPrice() + (hoursLate < 3 ? rb.getLateCheckoutFee1() : rb.getLateCheckoutFee2()));
+                    } else {
+                        rb.setSubPayment((dayBetween + 2) * rb.getDayPrice());
+                    }
+                } else if (ckinTime.isBefore(_14h)) {
+                    if (ckoutTime.isAfter(_0h) && ckoutTime.isBefore(_12h)) {
+                        rb.setSubPayment((dayBetween + 1) * rb.getDayPrice());
+                    } else if (ckoutTime.isBefore(_18h)) {
+                        long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
+                        rb.setSubPayment((dayBetween + 1) * rb.getDayPrice() + (hoursLate < 3 ? rb.getLateCheckoutFee1() : rb.getLateCheckoutFee2()));
+                    } else {
+                        rb.setSubPayment((dayBetween + 2) * rb.getDayPrice());
+                    }
+                }
+            }
+        }
     }
 }
