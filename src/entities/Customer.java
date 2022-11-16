@@ -105,4 +105,9 @@ public class Customer {
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
+
+    @Override
+    public String toString() {
+        return getCustomerId() + " - " + getCustomerName() + " - " + getCustomerIdNumber() + " - " + getCustomerTel();
+    }
 }

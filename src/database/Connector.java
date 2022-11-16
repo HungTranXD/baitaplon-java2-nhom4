@@ -1,8 +1,12 @@
 package database;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+
+import static java.sql.Types.NULL;
 
 public class Connector {
     public final static String connectionString = "jdbc:mysql://localhost:3306/eHotel?useUnicode=yes&characterEncoding=UTF-8";
@@ -53,7 +57,7 @@ public class Connector {
                     stt.setInt(i+1,(int) parameters.get(i));
                 }else if(parameters.get(i) instanceof Double){
                     stt.setDouble(i+1,(double) parameters.get(i));
-                } else if (parameters.get(i) instanceof LocalDateTime) {
+                } else if (parameters.get(i) instanceof LocalDateTime || parameters.get(i) instanceof LocalDate || parameters.get(i) instanceof LocalTime) {
                     stt.setString(i+1,(String)parameters.get(i).toString());
                 }
             }
@@ -73,6 +77,10 @@ public class Connector {
                 stt.setInt(i+1,(int) parameters.get(i));
             }else if(parameters.get(i) instanceof Double){
                 stt.setDouble(i+1,(double) parameters.get(i));
+            } else if (parameters.get(i) instanceof LocalDateTime || parameters.get(i) instanceof LocalDate || parameters.get(i) instanceof LocalTime) {
+                stt.setString(i+1,(String)parameters.get(i).toString());
+            } else if (parameters.get(i) == null) {
+                stt.setString(i+1, null);
             }
         }
         return stt.executeUpdate() > 0;

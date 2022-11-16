@@ -122,17 +122,21 @@ public class RoomRepository implements IRepository<Room> {
     }
 
 
-    public ArrayList<Room> findByDate(LocalDateTime checkin, LocalDateTime checkout) {
-        ArrayList<Room> ls = new ArrayList<>();
+    public ArrayList<RoomBooking> findByDate(LocalDateTime checkin, LocalDateTime checkout) {
+        ArrayList<RoomBooking> ls = new ArrayList<>();
         try{
             Connector connector = Connector.getInstance();
-            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id WHERE r.room_id IN ( SELECT DISTINCT r.room_id FROM nhom4_room r LEFT JOIN nhom4_room_booking rb ON rb.room_id = r.room_id LEFT JOIN nhom4_booking b ON b.booking_id = rb.booking_id AND b.checkin_date < ? AND b.checkout_date > ? WHERE b.booking_id IS NULL );";
+            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id WHERE r.room_id NOT IN (SELECT r.room_id FROM nhom4_room r LEFT JOIN nhom4_room_booking rb ON r.room_id = rb.room_id LEFT JOIN nhom4_booking b ON rb.booking_id = b.booking_id WHERE (b.checkin_date >= ? AND b.checkin_date <= ?) OR (b.checkout_date >= ? AND b.checkout_date <= ?) OR (b.checkin_date <= ? AND b.checkout_date >= ?));";
             ArrayList parameters = new ArrayList<>();
+            parameters.add(checkin);
             parameters.add(checkout);
             parameters.add(checkin);
+            parameters.add(checkout);
+            parameters.add(checkin);
+            parameters.add(checkout);
             ResultSet rs = connector.query(sql_txt, parameters);
             while (rs.next()) {
-                ls.add(new Room(
+                ls.add(new RoomBooking(
                     rs.getInt("room_id"),
                     rs.getString("room_number"),
                     rs.getInt("floor_id"),
@@ -146,7 +150,8 @@ public class RoomRepository implements IRepository<Room> {
                     rs.getDouble("early_checkin_fee_1"),
                     rs.getDouble("early_checkin_fee_2"),
                     rs.getDouble("late_checkout_fee_1"),
-                    rs.getDouble("late_checkout_fee_2")
+                    rs.getDouble("late_checkout_fee_2"),
+                    null
                 ));
             }
         } catch (Exception e) {

@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static javafx.createBooking.CreateBookingController.roomsBooked;
 
@@ -91,27 +92,42 @@ public class HomeController implements Initializable {
     private TextField txtBookingHourEnd;
 
     @FXML
-    private TableView<Room> tbvRoomsAvailable;
+    private TableView<RoomBooking> tbvRoomsAvailable;
 
     @FXML
-    private TableColumn<Room, CheckBox> roomAvailableSelectRoomCol;
+    private TableColumn<RoomBooking, CheckBox> roomAvailableSelectRoomCol;
 
     @FXML
-    private TableColumn<Room, String> roomAvailableRoomNumberCol;
+    private TableColumn<RoomBooking, String> roomAvailableRoomNumberCol;
 
     @FXML
-    private TableColumn<Room, String> roomAvailableRoomTypeCol;
+    private TableColumn<RoomBooking, String> roomAvailableRoomTypeCol;
 
     @FXML
-    private TableColumn<Room, String> roomAvailableFloorCol;
+    private TableColumn<RoomBooking, String> roomAvailableFloorCol;
 
     @FXML
-    private TableColumn<Room, Double> roomAvailableDayPriceCol;
+    private TableColumn<RoomBooking, Double> roomAvailableDayPriceCol;
 
-    private ObservableList<Room> availableRooms = FXCollections.observableArrayList();
+    private ObservableList<RoomBooking> availableRooms = FXCollections.observableArrayList();
 
     @FXML
     private ListView<RoomBooking> lvRoomsBooked;
+
+    @FXML
+    private Button btRmTypeAll_pnCreateBk;
+
+    @FXML
+    private Button btRmType1_pnCreateBk;
+
+    @FXML
+    private Button btRmType2_pnCreateBk;
+
+    @FXML
+    private Button btRmType3_pnCreateBk;
+
+    @FXML
+    private Button btRmType4_pnCreateBk;
 
 
 
@@ -222,12 +238,12 @@ public class HomeController implements Initializable {
             LocalDate checkinDate = dpBookingDateStart.getValue();
             LocalTime checkinTime = LocalTime.parse(txtBookingHourStart.getText());
             LocalDateTime checkin = LocalDateTime.of(checkinDate, checkinTime);
-            System.out.println(checkin);
 
             LocalDate checkoutDate = dpBookingDateEnd.getValue();
             LocalTime checkoutTime = LocalTime.parse(txtBookingHourEnd.getText());
             LocalDateTime checkout = LocalDateTime.of(checkoutDate, checkoutTime);
-            System.out.println(checkout);
+
+            if(checkout.isBefore(checkin)) throw new Exception("Thời gian checkout phải sau checkin!");
 
             availableRooms.addAll(rr.findByDate(checkin, checkout));
             tbvRoomsAvailable.setItems(availableRooms);
@@ -241,21 +257,68 @@ public class HomeController implements Initializable {
 
     public void clearRoomAvailable(ActionEvent mouseEvent) {
         tbvRoomsAvailable.getItems().clear();
-
+        dpBookingDateStart.setValue(LocalDate.now());
+        txtBookingHourStart.setText("14:00");
+        dpBookingDateEnd.setValue(LocalDate.now().plusDays(1));
+        txtBookingHourEnd.setText("12:00");
     }
 
-    public void goToBookingWindow(ActionEvent actionEvent) throws Exception{
-        CreateBookingController.checkinDate = dpBookingDateStart.getValue();
-        CreateBookingController.checkinTime = LocalTime.parse(txtBookingHourStart.getText());
-        CreateBookingController.checkoutDate = dpBookingDateEnd.getValue();
-        CreateBookingController.checkoutTime = LocalTime.parse(txtBookingHourEnd.getText());
-
-        //Calculate subPayment for each room booked
-        for(RoomBooking rb: roomsBooked) {
-            rb.setSubPayment(100.0);
+    //Filter available rooms by type
+    @FXML
+    void changeTypeRoomsAvailable(ActionEvent event) {
+        if (event.getSource() == btRmTypeAll_pnCreateBk) {
+            tbvRoomsAvailable.setItems(availableRooms);
+        } else if (event.getSource() == btRmType1_pnCreateBk) {
+            ObservableList<RoomBooking> filterResult = FXCollections.observableArrayList();
+            filterResult = availableRooms.stream().filter(roomBooking -> roomBooking.getType().equals("P.đơn")).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tbvRoomsAvailable.setItems(filterResult);
+        } else if (event.getSource() == btRmType2_pnCreateBk) {
+            ObservableList<RoomBooking> filterResult = FXCollections.observableArrayList();
+            filterResult = availableRooms.stream().filter(roomBooking -> roomBooking.getType().equals("P.đôi")).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tbvRoomsAvailable.setItems(filterResult);
+        } else if (event.getSource() == btRmType3_pnCreateBk) {
+            ObservableList<RoomBooking> filterResult = FXCollections.observableArrayList();
+            filterResult = availableRooms.stream().filter(roomBooking -> roomBooking.getType().equals("P.2Gi")).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tbvRoomsAvailable.setItems(filterResult);
+        } else if (event.getSource() == btRmType4_pnCreateBk) {
+            ObservableList<RoomBooking> filterResult = FXCollections.observableArrayList();
+            filterResult = availableRooms.stream().filter(roomBooking -> roomBooking.getType().equals("P.VIP")).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tbvRoomsAvailable.setItems(filterResult);
         }
+    }
 
-        CreateBookingController.display();
+    public void goToBookingWindow(ActionEvent actionEvent){
+        try {
+            CreateBookingController.checkinDate = dpBookingDateStart.getValue();
+            CreateBookingController.checkinTime = LocalTime.parse(txtBookingHourStart.getText());
+            CreateBookingController.checkoutDate = dpBookingDateEnd.getValue();
+            CreateBookingController.checkoutTime = LocalTime.parse(txtBookingHourEnd.getText());
+
+            //Check if is any rooms have been selected
+            if (roomsBooked.isEmpty()) {
+                throw new Exception("Chưa chọn phòng nào!");
+            }
+
+            //Calculate subPayment for each room booked
+            LocalDate checkinDate = dpBookingDateStart.getValue();
+            LocalTime checkinTime = LocalTime.parse(txtBookingHourStart.getText());
+            LocalDateTime checkin = LocalDateTime.of(checkinDate, checkinTime);
+
+            LocalDate checkoutDate = dpBookingDateEnd.getValue();
+            LocalTime checkoutTime = LocalTime.parse(txtBookingHourEnd.getText());
+            LocalDateTime checkout = LocalDateTime.of(checkoutDate, checkoutTime);
+
+            for(RoomBooking rb: roomsBooked) {
+                rb.calculateSubPayment(checkin, checkout);
+            }
+
+            CreateBookingController.display();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText(e.getMessage());
+            alert.show();
+        }
     }
 
     @FXML

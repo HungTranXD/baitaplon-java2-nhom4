@@ -5,12 +5,15 @@ import entities.Booking;
 import entities.Customer;
 import entities.Room;
 import entities.RoomBooking;
+import enums.RepoType;
+import factory.Factory;
 import interfaces.IRepository;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class BookingRepository implements IRepository<Booking> {
     @Override
@@ -47,7 +50,7 @@ public class BookingRepository implements IRepository<Booking> {
                 Double paymentRemain = rs.getDouble("payment_remain");
 
                 //Get all rooms booked in this Booking
-                RoomRepository rr = new RoomRepository();
+                RoomRepository rr = (RoomRepository) Factory.createRepository(RepoType.ROOM);
                 ArrayList<RoomBooking> roomsBooked = rr.findByBookingId(id);
 
                 ls.add(new Booking(id, timeBooked, checkinDate, checkoutDate, actualCheckinDate, actualCheckoutDate, customerBooked, paymentId, paymentMethod, paymentTotal, paymentPrepaid, paymentRemain, roomsBooked));
@@ -60,28 +63,83 @@ public class BookingRepository implements IRepository<Booking> {
 
     @Override
     public Boolean create(Booking b) {
+        //We have 2 scenarios:
+        // 1) customerId == null -> create new customer into customer table first then create new booking in booking table and new payment and room_booking
+        // 2) customerId != null -> which means we successfully retrieved customer with inputted IdNumber in CreateBookingController.java
         try {
-            //get the customer from booking
-            Customer c = new Customer(
-                    b.getCustomerBooked().getCustomerId(),
-                    b.getCustomerBooked().getCustomerName(),
-                    b.getCustomerBooked().getCustomerGender(),
-                    b.getCustomerBooked().getCustomerIdNumber(),
-                    b.getCustomerBooked().getCustomerEmail(),
-                    b.getCustomerBooked().getCustomerTel(),
-                    b.getCustomerBooked().getCustomerBirthdate(),
-                    b.getCustomerBooked().getCustomerNationality(),
-                    b.getCustomerBooked().getCustomerAddress()
-            );
-            //create (new) customer in database
-            CustomerRepository cr = new CustomerRepository();
-            Boolean createCustomerFlag = cr.create(c);
+            // 1) customerId == null
+            if (b.getCustomerBooked().getCustomerId() == null) {
+                //create (new) customer in database
+                CustomerRepository cr = (CustomerRepository) Factory.createRepository(RepoType.CUSTOMER);
+                Boolean createCustomerFlag = cr.create(b.getCustomerBooked());
 
-            //If create customer successful
-            if(createCustomerFlag) {
-                //Retrieve the new customer created in database (with new id)
-                Customer retrievedCustomer = cr.findByIdNumber(c.getCustomerIdNumber());
+                //If create customer successful
+                if(createCustomerFlag) {
+                    System.out.println("Create customer in database successful");
+                    //Retrieve the new customer created in database (with new id)
+                    Integer retrievedCustomerId = cr.findNewestId();
+                    System.out.println(retrievedCustomerId);
 
+                    //Insert new booking into booking table in database
+                    Connector connector = Connector.getInstance();
+                    String sql_txt_1 = "INSERT INTO nhom4_booking (time_booked, checkin_date, checkout_date, actual_checkin_date, actual_checkout_date, customer_id) VALUES (?,?,?,?,?,?)";
+                    ArrayList parameters_1 = new ArrayList<>();
+                    parameters_1.add(LocalDateTime.now());
+                    parameters_1.add(b.getCheckinDate());
+                    parameters_1.add(b.getCheckoutDate());
+                    parameters_1.add(b.getActualCheckinDate());
+                    parameters_1.add(b.getActualCheckoutDate());
+                    parameters_1.add(retrievedCustomerId);
+                    Boolean createBookingFlag = connector.execute(sql_txt_1, parameters_1);
+
+                    //If create booking successful
+                    if(createBookingFlag) {
+                        System.out.println("Create booking in database successful");
+                        //Retrieve the newly created booking (by selecting the highest booking_id)
+                        int retrievedBookingId = 0;
+                        String sql_txt_2 = "SELECT * FROM nhom4_booking ORDER BY booking_id DESC LIMIT 1;";
+                        ResultSet rs = connector.query(sql_txt_2);
+                        while (rs.next()) {
+                            retrievedBookingId = rs.getInt("booking_id");
+                        }
+
+                        //Insert new payment into payment table in database
+                        String sql_txt_3 = "INSERT INTO nhom4_payment (payment_method, payment_total, payment_prepaid, payment_remain, booking_id) VALUES (?,?,?,?,?)";
+                        ArrayList parameters_3 = new ArrayList<>();
+                        parameters_3.add(b.getPaymentMethod());
+                        parameters_3.add(b.getPaymentTotal());
+                        parameters_3.add(b.getPaymentPrepaid());
+                        parameters_3.add(b.getPaymentRemain());
+                        parameters_3.add(retrievedBookingId);
+                        Boolean createPaymentFlag = connector.execute(sql_txt_3, parameters_3);
+
+                        if(createPaymentFlag) {
+                            System.out.println("Create payment in database successful");
+                            //Insert new room_booking into room_booking table in database
+                            for (RoomBooking rb: b.getRoomsBooked()) {
+                                String sql_txt_4 = "INSERT INTO nhom4_room_booking (booking_id, room_id, sub_payment) VALUES (?,?,?)";
+                                ArrayList parameters_4 = new ArrayList<>();
+                                parameters_4.add(retrievedBookingId);
+                                parameters_4.add(rb.getId());
+                                parameters_4.add(rb.getSubPayment());
+                                Boolean createRoomBookingFlag = connector.execute(sql_txt_4,parameters_4);
+                                if (!createRoomBookingFlag) return false;
+                            }
+                            return true;
+                        } else {
+                            System.out.println("Create payment in database successful");
+                            return false;
+                        }
+                    } else {
+                        System.out.println("Create booking in database fail");
+                        return false;
+                    }
+                } else {
+                    System.out.println("Create customer in database fail");
+                    return false;
+                }
+            // 2) customerId != null
+            } else {
                 //Insert new booking into booking table in database
                 Connector connector = Connector.getInstance();
                 String sql_txt_1 = "INSERT INTO nhom4_booking (time_booked, checkin_date, checkout_date, actual_checkin_date, actual_checkout_date, customer_id) VALUES (?,?,?,?,?,?)";
@@ -91,11 +149,12 @@ public class BookingRepository implements IRepository<Booking> {
                 parameters_1.add(b.getCheckoutDate());
                 parameters_1.add(b.getActualCheckinDate());
                 parameters_1.add(b.getActualCheckoutDate());
-                parameters_1.add(retrievedCustomer.getCustomerId());
+                parameters_1.add(b.getCustomerBooked().getCustomerId());
                 Boolean createBookingFlag = connector.execute(sql_txt_1, parameters_1);
 
                 //If create booking successful
                 if(createBookingFlag) {
+                    System.out.println("Create booking in database successful");
                     //Retrieve the newly created booking (by selecting the highest booking_id)
                     int retrievedBookingId = 0;
                     String sql_txt_2 = "SELECT * FROM nhom4_booking ORDER BY booking_id DESC LIMIT 1;";
@@ -115,6 +174,7 @@ public class BookingRepository implements IRepository<Booking> {
                     Boolean createPaymentFlag = connector.execute(sql_txt_3, parameters_3);
 
                     if(createPaymentFlag) {
+                        System.out.println("Create payment in database successful");
                         //Insert new room_booking into room_booking table in database
                         for (RoomBooking rb: b.getRoomsBooked()) {
                             String sql_txt_4 = "INSERT INTO nhom4_room_booking (booking_id, room_id, sub_payment) VALUES (?,?,?)";
@@ -126,9 +186,16 @@ public class BookingRepository implements IRepository<Booking> {
                             if (!createRoomBookingFlag) return false;
                         }
                         return true;
-                    } else return false;
-                } else return false;
-            } else return false;
+                    } else {
+                        System.out.println("Create payment in database successful");
+                        return false;
+                    }
+                } else {
+                    System.out.println("Create booking in database fail");
+                    return false;
+                }
+            }
+
         } catch (Exception e) {
             System.out.println("Error in create(): " + e.getMessage());
         }
@@ -210,7 +277,7 @@ public class BookingRepository implements IRepository<Booking> {
                 Double paymentRemain = rs.getDouble("payment_remain");
 
                 //Get all rooms booked in this Booking
-                RoomRepository rr = new RoomRepository();
+                RoomRepository rr = (RoomRepository) Factory.createRepository(RepoType.ROOM);
                 ArrayList<RoomBooking> roomsBooked = rr.findByBookingId(id);
 
                 Booking b = new Booking(id, timeBooked, checkinDate, checkoutDate, actualCheckinDate, actualCheckoutDate, customerBooked, paymentId, paymentMethod, paymentTotal, paymentPrepaid, paymentRemain, roomsBooked);

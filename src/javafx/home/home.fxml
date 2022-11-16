@@ -13,7 +13,7 @@
    <children>
       <BorderPane prefHeight="250.0" prefWidth="307.0" style="-fx-background-color: #f0f0f0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <AnchorPane prefHeight="50.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="50.0" prefWidth="1200.0" style="-fx-background-color: #ffffff; -fx-border-color: #bbbbbb; -fx-border-width: 0 0 1px 0;" BorderPane.alignment="CENTER">
                <children>
                   <TextField prefHeight="20.0" prefWidth="274.0" promptText="Tìm mã đặt phòng, tên khách" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="10.0" />
                   <ImageView fitHeight="24.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="7.0">
@@ -269,144 +269,6 @@
                         </TableView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="pnRoomPlan" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
-                     <children>
-                        <Button id="button-green" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Trống (20)" textFill="#43a047" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                        <Button id="button-blue" layoutX="92.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Đã đặt (20)" textFill="#1e88e5" AnchorPane.leftAnchor="92.0" AnchorPane.topAnchor="10.0" />
-                        <Button id="button-purple" layoutX="178.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Chưa đến (20)" textFill="#9c27b0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="10.0" />
-                        <Button id="button-red" layoutX="280.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Có khách (20)" textFill="#d9390d" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="10.0" />
-                        <Button id="button-orange" layoutX="381.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Chưa đi (20)" textFill="#fc9540" AnchorPane.leftAnchor="381.0" AnchorPane.topAnchor="10.0" />
-                        <TabPane layoutX="10.0" layoutY="44.0" prefHeight="677.0" prefWidth="981.0" stylesheets="@home.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0">
-                          <tabs>
-                            <Tab text="Đặt phòng">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label layoutX="14.0" layoutY="14.0" text="Phòng trống (20)" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="10.0">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="14.0" layoutY="35.0" prefHeight="180.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-                                            <columns>
-                                              <TableColumn prefWidth="75.0" text="Loại phòng" />
-                                              <TableColumn prefWidth="75.0" text="Số phòng" />
-                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
-                                                <TableColumn prefWidth="75.0" text="Tên khách" />
-                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
-                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
-                                            </columns>
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                          <Label layoutX="804.0" layoutY="15.0" text="Chọn phòng để:" AnchorPane.rightAnchor="115.0" AnchorPane.topAnchor="15.0" />
-                                          <Button layoutX="885.0" layoutY="10.0" mnemonicParsing="false" styleClass="button3" text="Nhận/Đặt phòng" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
-                                          <Label layoutX="14.0" layoutY="233.0" text="Đã đặt (20)" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="230.0">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutY="258.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="260.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
-                                                <TableColumn prefWidth="75.0" text="Số phòng" />
-                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
-                                                <TableColumn prefWidth="75.0" text="Tên khách" />
-                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
-                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
-                                             </columns>
-                                          </TableView>
-                                          <Label layoutX="724.0" layoutY="234.0" text="Chọn phòng để:" />
-                                          <Button layoutX="816.0" layoutY="229.0" mnemonicParsing="false" styleClass="button3" text="Nhận phòng" />
-                                          <Button layoutX="907.0" layoutY="229.0" mnemonicParsing="false" styleClass="button4" text="Hủy đặt phòng" />
-                                          <Label layoutX="11.0" layoutY="467.0" text="Chưa đi (20)" AnchorPane.topAnchor="463.0">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="14.0" layoutY="493.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="493.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
-                                                <TableColumn prefWidth="75.0" text="Số phòng" />
-                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
-                                                <TableColumn prefWidth="75.0" text="Tên khách" />
-                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
-                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
-                                             </columns>
-                                          </TableView>
-                                          <Label layoutX="839.0" layoutY="467.0" text="Chọn phòng để:" AnchorPane.rightAnchor="80.0" />
-                                          <Button layoutX="932.0" layoutY="462.0" mnemonicParsing="false" styleClass="button5" text="Trả phòng" AnchorPane.rightAnchor="0.0" />
-                                          <Label layoutX="14.0" layoutY="345.0" text="Chưa đến (20)" AnchorPane.topAnchor="347.0">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="6.0" layoutY="372.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.topAnchor="376.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
-                                                <TableColumn prefWidth="75.0" text="Số phòng" />
-                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
-                                                <TableColumn prefWidth="75.0" text="Tên khách" />
-                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
-                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
-                                             </columns>
-                                          </TableView>
-                                          <Label layoutX="724.0" layoutY="351.0" text="Chọn phòng để:" />
-                                          <Button layoutX="816.0" layoutY="344.0" mnemonicParsing="false" styleClass="button3" text="Nhận phòng" />
-                                          <Button layoutX="907.0" layoutY="344.0" mnemonicParsing="false" styleClass="button4" text="Hủy đặt phòng" />
-                                          <Label layoutX="11.0" layoutY="580.0" text="Có khách (20)">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="11.0" layoutY="605.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="609.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
-                                                <TableColumn prefWidth="75.0" text="Số phòng" />
-                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
-                                                <TableColumn prefWidth="75.0" text="Tên khách" />
-                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
-                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
-                                             </columns>
-                                          </TableView>
-                                          <Label layoutX="839.0" layoutY="584.0" text="Chọn phòng để:" />
-                                          <Button layoutX="932.0" layoutY="579.0" mnemonicParsing="false" styleClass="button5" text="Trả phòng" />
-                                       </children>
-                                    </AnchorPane>
-                              </content>
-                            </Tab>
-                            <Tab text="Loại">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </Tab>
-                              <Tab text="Tầng">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                 </content>
-                              </Tab>
-                              <Tab text="Phòng">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                 </content>
-                              </Tab>
-                          </tabs>
-                        </TabPane>
-                     </children>
-                  </AnchorPane>
                   <AnchorPane fx:id="pnGeneral" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
                      <children>
                         <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="SẼ ĐẾN" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
@@ -569,7 +431,145 @@
                         </TabPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
+                  <AnchorPane fx:id="pnRoomPlan" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
+                     <children>
+                        <Button id="button-green" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Trống (20)" textFill="#43a047" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <Button id="button-blue" layoutX="92.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Đã đặt (20)" textFill="#1e88e5" AnchorPane.leftAnchor="92.0" AnchorPane.topAnchor="10.0" />
+                        <Button id="button-purple" layoutX="178.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Chưa đến (20)" textFill="#9c27b0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="10.0" />
+                        <Button id="button-red" layoutX="280.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Có khách (20)" textFill="#d9390d" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="10.0" />
+                        <Button id="button-orange" layoutX="381.0" layoutY="10.0" mnemonicParsing="false" styleClass="button2" stylesheets="@home.css" text="Chưa đi (20)" textFill="#fc9540" AnchorPane.leftAnchor="381.0" AnchorPane.topAnchor="10.0" />
+                        <TabPane layoutX="10.0" layoutY="44.0" prefHeight="677.0" prefWidth="981.0" stylesheets="@home.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0">
+                          <tabs>
+                            <Tab text="Đặt phòng">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="14.0" text="Phòng trống (20)" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="10.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutX="14.0" layoutY="35.0" prefHeight="180.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+                                            <columns>
+                                              <TableColumn prefWidth="75.0" text="Loại phòng" />
+                                              <TableColumn prefWidth="75.0" text="Số phòng" />
+                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
+                                                <TableColumn prefWidth="75.0" text="Tên khách" />
+                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
+                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
+                                            </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
+                                          <Label layoutX="804.0" layoutY="15.0" text="Chọn phòng để:" AnchorPane.rightAnchor="115.0" AnchorPane.topAnchor="15.0" />
+                                          <Button layoutX="885.0" layoutY="10.0" mnemonicParsing="false" styleClass="button3" text="Nhận/Đặt phòng" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
+                                          <Label layoutX="14.0" layoutY="233.0" text="Đã đặt (20)" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="230.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutY="258.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="260.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                             <columns>
+                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
+                                                <TableColumn prefWidth="75.0" text="Số phòng" />
+                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
+                                                <TableColumn prefWidth="75.0" text="Tên khách" />
+                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
+                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
+                                             </columns>
+                                          </TableView>
+                                          <Label layoutX="724.0" layoutY="234.0" text="Chọn phòng để:" />
+                                          <Button layoutX="816.0" layoutY="229.0" mnemonicParsing="false" styleClass="button3" text="Nhận phòng" />
+                                          <Button layoutX="907.0" layoutY="229.0" mnemonicParsing="false" styleClass="button4" text="Hủy đặt phòng" />
+                                          <Label layoutX="11.0" layoutY="467.0" text="Chưa đi (20)" AnchorPane.topAnchor="463.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutX="14.0" layoutY="493.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="493.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                             <columns>
+                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
+                                                <TableColumn prefWidth="75.0" text="Số phòng" />
+                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
+                                                <TableColumn prefWidth="75.0" text="Tên khách" />
+                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
+                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
+                                             </columns>
+                                          </TableView>
+                                          <Label layoutX="839.0" layoutY="467.0" text="Chọn phòng để:" AnchorPane.rightAnchor="80.0" />
+                                          <Button layoutX="932.0" layoutY="462.0" mnemonicParsing="false" styleClass="button5" text="Trả phòng" AnchorPane.rightAnchor="0.0" />
+                                          <Label layoutX="14.0" layoutY="345.0" text="Chưa đến (20)" AnchorPane.topAnchor="347.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutX="6.0" layoutY="372.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.topAnchor="376.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                             <columns>
+                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
+                                                <TableColumn prefWidth="75.0" text="Số phòng" />
+                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
+                                                <TableColumn prefWidth="75.0" text="Tên khách" />
+                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
+                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
+                                             </columns>
+                                          </TableView>
+                                          <Label layoutX="724.0" layoutY="351.0" text="Chọn phòng để:" />
+                                          <Button layoutX="816.0" layoutY="344.0" mnemonicParsing="false" styleClass="button3" text="Nhận phòng" />
+                                          <Button layoutX="907.0" layoutY="344.0" mnemonicParsing="false" styleClass="button4" text="Hủy đặt phòng" />
+                                          <Label layoutX="11.0" layoutY="580.0" text="Có khách (20)">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TableView layoutX="11.0" layoutY="605.0" prefHeight="75.0" prefWidth="999.0" stylesheets="@home.css" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="609.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                             <columns>
+                                                <TableColumn prefWidth="75.0" text="Loại phòng" />
+                                                <TableColumn prefWidth="75.0" text="Số phòng" />
+                                                <TableColumn prefWidth="75.0" text="Trình trạng" />
+                                                <TableColumn prefWidth="75.0" text="Tên khách" />
+                                                <TableColumn prefWidth="114.0" text="Ngày nhận phòng" />
+                                                <TableColumn prefWidth="110.0" text="Ngày trả phòng" />
+                                             </columns>
+                                          </TableView>
+                                          <Label layoutX="839.0" layoutY="584.0" text="Chọn phòng để:" />
+                                          <Button layoutX="932.0" layoutY="579.0" mnemonicParsing="false" styleClass="button5" text="Trả phòng" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="Loại">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </Tab>
+                              <Tab text="Tầng">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </Tab>
+                              <Tab text="Phòng">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="pnCreateReservation" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;" styleClass="butt">
                      <children>
                         <DatePicker fx:id="dpBookingDateStart" layoutX="115.0" layoutY="8.0" />
                         <Label layoutX="14.0" layoutY="12.0" text="Tìm kiếm từ ngày:" AnchorPane.leftAnchor="14.0" />
@@ -578,15 +578,7 @@
                         <DatePicker fx:id="dpBookingDateEnd" layoutX="390.0" layoutY="8.0" />
                         <TextField fx:id="txtBookingHourEnd" alignment="CENTER" layoutX="570.0" layoutY="8.0" prefHeight="25.0" prefWidth="57.0" promptText="hh:mm" />
                         <Button layoutX="634.0" layoutY="8.0" mnemonicParsing="false" onAction="#searchRoomsAvailable" styleClass="button6" stylesheets="@home.css" text="Tìm kiếm" />
-                        <Button layoutX="705.0" layoutY="8.0" mnemonicParsing="false" onAction="#clearRoomAvailable" styleClass="button4" stylesheets="@home.css">
-                           <graphic>
-                              <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../icon/cancel.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
+                        <Button layoutX="705.0" layoutY="8.0" mnemonicParsing="false" onAction="#clearRoomAvailable" styleClass="button4" stylesheets="@home.css" text="Xóa" />
                         <GridPane layoutX="9.0" layoutY="42.0" prefHeight="165.0" prefWidth="730.0" style="-fx-background-color: #ffffff; -fx-background-radius: 5px;">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -663,13 +655,13 @@
                                  </padding>
                               </StackPane>
                               <Label alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER" layoutX="558.0" layoutY="41.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER" layoutX="558.0" layoutY="41.0" prefHeight="33.0" prefWidth="188.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                               <Label alignment="CENTER" layoutX="558.0" layoutY="72.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                               <Label alignment="CENTER" layoutX="558.0" layoutY="103.0" prefHeight="40.0" prefWidth="183.0" style="-fx-border-color: #f0f0f0; -fx-border-width: 0px 0px 1px 0px;" text="500,000" textFill="#909090" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                            </children>
                         </GridPane>
-                        <Button layoutX="336.0" layoutY="219.0" mnemonicParsing="false" onAction="#goToBookingWindow" styleClass="button3" stylesheets="@home.css" text="Đặt phòng" />
-                        <TableView fx:id="tbvRoomsAvailable" layoutX="11.0" layoutY="255.0" prefHeight="535.0" prefWidth="730.0" stylesheets="@home.css" AnchorPane.leftAnchor="14.0">
+                        <Button layoutX="335.0" layoutY="684.0" mnemonicParsing="false" onAction="#goToBookingWindow" styleClass="button3" stylesheets="@home.css" text="Đặt phòng" />
+                        <TableView fx:id="tbvRoomsAvailable" layoutX="11.0" layoutY="233.0" prefHeight="442.0" prefWidth="730.0" stylesheets="@home.css" AnchorPane.leftAnchor="14.0">
                           <columns>
                             <TableColumn fx:id="roomAvailableSelectRoomCol" prefWidth="75.0" text="Chọn phòng" />
                             <TableColumn fx:id="roomAvailableRoomNumberCol" prefWidth="75.0" text="Số phòng" />
@@ -681,7 +673,12 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <ListView fx:id="lvRoomsBooked" layoutX="755.0" layoutY="42.0" prefHeight="308.0" prefWidth="260.0" />
+                        <ListView fx:id="lvRoomsBooked" layoutX="755.0" layoutY="42.0" prefHeight="165.0" prefWidth="260.0" />
+                        <Button id="button-green" fx:id="btRmTypeAll_pnCreateBk" layoutX="755.0" layoutY="233.0" mnemonicParsing="false" onAction="#changeTypeRoomsAvailable" prefHeight="25.0" prefWidth="90.0" styleClass="button2" stylesheets="@home.css" text="Tất cả" textFill="#43a047" />
+                        <Button id="button-blue" fx:id="btRmType1_pnCreateBk" layoutX="755.0" layoutY="269.0" mnemonicParsing="false" onAction="#changeTypeRoomsAvailable" prefHeight="25.0" prefWidth="90.0" styleClass="button2" stylesheets="@home.css" text="P.đơn" textFill="#1e88e5" />
+                        <Button id="button-blue" fx:id="btRmType2_pnCreateBk" layoutX="755.0" layoutY="305.0" mnemonicParsing="false" onAction="#changeTypeRoomsAvailable" prefHeight="25.0" prefWidth="90.0" styleClass="button2" stylesheets="@home.css" text="P.đôi" textFill="#1e88e5" />
+                        <Button id="button-blue" fx:id="btRmType3_pnCreateBk" layoutX="755.0" layoutY="341.0" mnemonicParsing="false" onAction="#changeTypeRoomsAvailable" prefHeight="25.0" prefWidth="90.0" styleClass="button2" stylesheets="@home.css" text="P.2Gi" textFill="#1e88e5" />
+                        <Button id="button-blue" fx:id="btRmType4_pnCreateBk" layoutX="755.0" layoutY="375.0" mnemonicParsing="false" onAction="#changeTypeRoomsAvailable" prefHeight="25.0" prefWidth="90.0" styleClass="button2" stylesheets="@home.css" text="P.VIP" textFill="#1e88e5" />
                      </children>
                   </AnchorPane>
                </children></StackPane>

@@ -214,12 +214,15 @@ public class Booking {
                     }
                 } else if (ckinTime.isBefore(_14h)) {
                     if (ckoutTime.isAfter(_0h) && ckoutTime.isBefore(_12h)) {
-                        rb.setSubPayment((dayBetween + 1) * rb.getDayPrice());
+                        long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
+                        rb.setSubPayment(dayBetween * rb.getDayPrice() + (hoursEarly < 5 ? rb.getEarlyCheckinFee1() : rb.getEarlyCheckinFee2()));
                     } else if (ckoutTime.isBefore(_18h)) {
+                        long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
                         long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
-                        rb.setSubPayment((dayBetween + 1) * rb.getDayPrice() + (hoursLate < 3 ? rb.getLateCheckoutFee1() : rb.getLateCheckoutFee2()));
+                        rb.setSubPayment(dayBetween * rb.getDayPrice() + (hoursEarly < 5 ? rb.getEarlyCheckinFee1() : rb.getEarlyCheckinFee2()) + (hoursLate < 3 ? rb.getLateCheckoutFee1() : rb.getLateCheckoutFee2()));
                     } else {
-                        rb.setSubPayment((dayBetween + 2) * rb.getDayPrice());
+                        long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
+                        rb.setSubPayment((dayBetween + 1) * rb.getDayPrice() + (hoursEarly < 5 ? rb.getEarlyCheckinFee1() : rb.getEarlyCheckinFee2()));
                     }
                 }
             }

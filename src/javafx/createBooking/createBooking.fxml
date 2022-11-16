@@ -109,8 +109,8 @@
             </AnchorPane>
             <HBox alignment="CENTER" prefHeight="32.0" prefWidth="380.0" spacing="5.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" styleClass="button3" text="Đặt phòng" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" styleClass="button6" text="Nhận phòng" />
+                  <Button mnemonicParsing="false" onAction="#createBooking" prefHeight="25.0" prefWidth="90.0" styleClass="button3" text="Đặt phòng" />
+                  <Button mnemonicParsing="false" onAction="#createBookingAndCheckin" prefHeight="25.0" prefWidth="90.0" styleClass="button6" text="Nhận phòng" />
                </children>
             </HBox>
          </children>
