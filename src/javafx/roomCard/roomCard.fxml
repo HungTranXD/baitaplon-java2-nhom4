@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="90.0" prefWidth="230.0" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.roomCard.RoomCardController">
+   <children>
+      <HBox layoutX="1.0" layoutY="1.0" prefHeight="100.0" prefWidth="229.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fx:id="vbRoomInfo" alignment="CENTER" prefHeight="90.0" prefWidth="75.0" style="-fx-background-color: #43a047; -fx-background-radius: 10px 0 0 10px;">
+               <children>
+                  <Label fx:id="lbRoomType" alignment="CENTER" prefHeight="17.0" prefWidth="78.0" text="P.Đơn" textFill="WHITE" />
+                  <Label fx:id="lbRoomNumber" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="31.0" prefWidth="75.0" text="101" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="1.0" prefWidth="75.0" spacing="7.0">
+                     <children>
+                        <ImageView fx:id="imgIconStatus" fitHeight="17.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../icon/empty.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox fx:id="vbRoomDetail" alignment="CENTER" prefHeight="90.0" prefWidth="155.0" style="-fx-background-color: #ebfceb; -fx-background-radius: 0 10px 10px 0;">
+               <children>
+                  <Label fx:id="lbRoomStatus" alignment="CENTER" prefHeight="17.0" prefWidth="164.0" text="Trống" textFill="#43a047">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbCustomerName" prefHeight="17.0" prefWidth="155.0" style="-fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;" text="Nguyễn Văn An" textFill="#43a047">
+                     <padding>
+                        <Insets bottom="3.0" />
+                     </padding></Label>
+                  <Label fx:id="lbCheckin" layoutX="10.0" layoutY="35.0" prefHeight="17.0" prefWidth="155.0" text="Đến: 17/11/2022 14:00" textFill="#8c8c8c">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbCheckout" layoutX="10.0" layoutY="52.0" prefHeight="17.0" prefWidth="155.0" text="Đi:    18/11/2022 12:00" textFill="#8c8c8c">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding></VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

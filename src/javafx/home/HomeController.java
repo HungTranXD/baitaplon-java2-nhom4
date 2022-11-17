@@ -1,7 +1,6 @@
 package javafx.home;
 
-import entities.Room;
-import entities.RoomBooking;
+import entities.*;
 import enums.RepoType;
 import factory.Factory;
 import impls.RoomRepository;
@@ -13,10 +12,14 @@ import javafx.collections.ObservableList;
 import javafx.createBooking.CreateBookingController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.roomCard.RoomCardController;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -25,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -111,8 +115,6 @@ public class HomeController implements Initializable {
 
     private ObservableList<RoomBooking> availableRooms = FXCollections.observableArrayList();
 
-    @FXML
-    private ListView<RoomBooking> lvRoomsBooked;
 
     @FXML
     private Button btRmTypeAll_pnCreateBk;
@@ -130,7 +132,16 @@ public class HomeController implements Initializable {
     private Button btRmType4_pnCreateBk;
 
 
+    /* ------------------------------------------------------------------- */
+    /* ---------------------- 2) PANE - Rooms Plan ----------------------- */
+    /* ------------------------------------------------------------------- */
+    @FXML
+    private ScrollPane scrollRooms;
 
+    @FXML
+    private GridPane gridRooms;
+
+    private ArrayList<RoomToday> roomsPlanToday = new ArrayList<>();
 
 
 
@@ -168,7 +179,39 @@ public class HomeController implements Initializable {
         roomAvailableFloorCol.setCellValueFactory(new PropertyValueFactory<>("floorName"));
         roomAvailableDayPriceCol.setCellValueFactory(new PropertyValueFactory<>("dayPrice"));
 
-        lvRoomsBooked.setItems(roomsBooked);
+        /* ------------------------------------------------------------------- */
+        /* ---------------------- 2) PANE - Rooms Plan ----------------------- */
+        /* ------------------------------------------------------------------- */
+
+        for(int i = 0; i < 30; i++) {
+            Customer c = new Customer(1, "a", "a", "aaaaaaa", "aaaaa", "000000", LocalDate.parse("1970-01-01"), "vn", "hn");
+            RoomToday r = new RoomToday(1, "101", 1, "T1", 1, "P.Đơn", "a", 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, "Có khách", 1, LocalDateTime.now(), LocalDateTime.now(), c);
+            roomsPlanToday.add(r);
+        }
+
+        //Specify number of rows and columns in grid
+        int column = 0;
+        int row = 0;
+        try {
+            for (int i = 0; i < roomsPlanToday.size(); i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("../roomCard/roomCard.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                RoomCardController roomCardController = fxmlLoader.getController();
+                roomCardController.setData(roomsPlanToday.get(i));
+
+                if (column == 4) {
+                    column = 0;
+                    row++;
+                }
+                gridRooms.add(anchorPane, column++, row);
+                GridPane.setMargin(anchorPane, new Insets(10));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -231,7 +274,6 @@ public class HomeController implements Initializable {
     /* ------------------------------------------------------------------- */
     public void searchRoomsAvailable(ActionEvent actionEvent) {
         clearRoomAvailable(actionEvent);
-        lvRoomsBooked.getItems().clear();
         try {
             RoomRepository rr = (RoomRepository) Factory.createRepository(RepoType.ROOM);
 
@@ -321,7 +363,5 @@ public class HomeController implements Initializable {
         }
     }
 
-    @FXML
-    void setListView(ActionEvent event) {
-    }
+
 }

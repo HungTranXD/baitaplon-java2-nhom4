@@ -18,7 +18,6 @@ public class Room {
     private Double earlyCheckinFee2;
     private Double lateCheckoutFee1;
     private Double lateCheckoutFee2;
-//    private CheckBox cbSelectRoom;
 
     /* -------------------------------------------------------------- */
     /* ------------------------ CONSTRUCTORS ------------------------ */
@@ -41,18 +40,7 @@ public class Room {
         this.earlyCheckinFee2 = earlyCheckinFee2;
         this.lateCheckoutFee1 = lateCheckoutFee1;
         this.lateCheckoutFee2 = lateCheckoutFee2;
-//        this.cbSelectRoom = new CheckBox();
-//
-//
-//        cbSelectRoom.setOnAction(event -> {
-//            RoomBooking rb = new RoomBooking(id, number, floorId, floorName, type_id, type, typeDescription, firstHourPrice, nextHourPrice, dayPrice, earlyCheckinFee1, earlyCheckinFee2, lateCheckoutFee1, lateCheckoutFee2, null);
-//            if(cbSelectRoom.isSelected()) {
-//                CreateBookingController.roomsBooked.add(rb);
-//            }
-//            else {
-//                CreateBookingController.roomsBooked.remove(rb);
-//            }
-//        });
+
 
     }
 
