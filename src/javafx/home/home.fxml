@@ -418,10 +418,10 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" layoutX="558.0" prefHeight="46.0" prefWidth="462.0" spacing="5.0">
                                        <children>
-                                          <Button fx:id="btAllStatus" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-blue" stylesheets="@home.css" text="Tất cả (30)" textFill="#1e88e5" />
-                                          <Button fx:id="btStatusEmpty" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-green" stylesheets="@home.css" text="Trống (20)" textFill="#43a047" />
-                                          <Button fx:id="btStatusOccupied" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-red" stylesheets="@home.css" text="Có khách (20)" textFill="#d9390d" />
-                                          <Button fx:id="btStatusOverdue" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-orange" stylesheets="@home.css" text="Chưa đi (20)" textFill="#fc9540" />
+                                          <Button fx:id="btAllStatus" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-blue" stylesheets="@home.css" text="Tất cả (0)" textFill="#1e88e5" />
+                                          <Button fx:id="btStatusEmpty" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-green" stylesheets="@home.css" text="Trống (0)" textFill="#43a047" />
+                                          <Button fx:id="btStatusOccupied" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-red" stylesheets="@home.css" text="Có khách (0)" textFill="#d9390d" />
+                                          <Button fx:id="btStatusOverdue" mnemonicParsing="false" onAction="#filterByStatus" styleClass="button-orange" stylesheets="@home.css" text="Chưa đi (0)" textFill="#fc9540" />
                                        </children>
                                        <padding>
                                           <Insets right="10.0" />
