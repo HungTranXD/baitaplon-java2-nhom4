@@ -175,11 +175,13 @@ public class HomeController implements Initializable {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
+                    roomsPlanToday.clear();
+                    gridRooms.getChildren().clear();
                     initRoomsPlan(roomType, roomStatus);
                 }
             });
         };
-        ScheduledFuture<?> scheduledFuture = ses.scheduleAtFixedRate(task,0,1, TimeUnit.MINUTES);
+        ScheduledFuture<?> scheduledFuture = ses.scheduleAtFixedRate(task,0,10000, TimeUnit.SECONDS);
 
 
         //Initialize Selected rooms table
