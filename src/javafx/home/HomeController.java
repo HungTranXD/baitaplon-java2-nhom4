@@ -175,8 +175,8 @@ public class HomeController implements Initializable {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    roomsPlanToday.clear();
-                    gridRooms.getChildren().clear();
+//                    roomsPlanToday.clear();
+//                    gridRooms.getChildren().clear();
                     initRoomsPlan(roomType, roomStatus);
                 }
             });
@@ -310,8 +310,8 @@ public class HomeController implements Initializable {
             btType2.getStyleClass().remove("button2-focused");
             btType3.getStyleClass().remove("button2-focused");
         }
-        roomsPlanToday.clear();
-        gridRooms.getChildren().clear();
+//        roomsPlanToday.clear();
+//        gridRooms.getChildren().clear();
         initRoomsPlan(roomType, roomStatus);
     }
 
@@ -346,14 +346,16 @@ public class HomeController implements Initializable {
             btStatusEmpty.getStyleClass().remove("button-green-focused");
             btStatusOccupied.getStyleClass().remove("button-red-focused");
         }
-        roomsPlanToday.clear();
-        gridRooms.getChildren().clear();
+//        roomsPlanToday.clear();
+//        gridRooms.getChildren().clear();
         initRoomsPlan(roomType, roomStatus);
     }
     // -- End of Filter rooms --
 
 
     public void initRoomsPlan(String roomType, String roomStatus) {
+        roomsPlanToday.clear();
+        gridRooms.getChildren().clear();
         //Get all room from database
         RoomRepository rr = (RoomRepository) Factory.createRepository(RepoType.ROOM);
 
