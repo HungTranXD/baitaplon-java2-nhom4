@@ -2,10 +2,10 @@ package impls;
 
 import database.Connector;
 import entities.Room;
-import entities.RoomBooking;
 import interfaces.IRepository;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -15,76 +15,49 @@ public class RoomRepository implements IRepository<Room> {
         ArrayList<Room> ls = new ArrayList<>();
         try {
             Connector connector = Connector.getInstance();
-            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id";
+            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id LEFT JOIN nhom4_checkin_out ck ON r.checkin_out_id = ck.checkin_out_id LEFT JOIN nhom4_customer c ON ck.customer_id = c.customer_id;";
             ResultSet rs = connector.query(sql_txt);
             while (rs.next()) {
                 ls.add(new Room(
-                   rs.getInt("room_id"),
-                   rs.getString("room_number"),
-                   rs.getInt("floor_id"),
-                   rs.getString("floor_name"),
-                   rs.getInt("type_id"),
-                   rs.getString("type_name"),
-                   rs.getString("type_description"),
-                   rs.getDouble("first_hour_price"),
-                   rs.getDouble("next_hour_price"),
-                   rs.getDouble("day_price"),
-                   rs.getDouble("early_checkin_fee_1"),
-                   rs.getDouble("early_checkin_fee_2"),
-                   rs.getDouble("late_checkout_fee_1"),
-                   rs.getDouble("late_checkout_fee_2")
+                        rs.getInt("room_id"),
+                        rs.getString("room_number"),
+                        rs.getString("floor"),
+                        rs.getInt("type_id"),
+                        rs.getString("type_name"),
+                        rs.getString("type_description"),
+                        rs.getDouble("first_hour_price"),
+                        rs.getDouble("next_hour_price"),
+                        rs.getDouble("day_price"),
+                        rs.getDouble("early_checkin_fee_1"),
+                        rs.getDouble("early_checkin_fee_2"),
+                        rs.getDouble("late_checkout_fee_1"),
+                        rs.getDouble("late_checkout_fee_2"),
+                        rs.getInt("checkin_out_id"),
+                        rs.getString("checkin_datetime") == null ? null : LocalDateTime.parse(rs.getString("checkin_datetime").replaceAll("\\s+", "T")),
+                        rs.getString("checkout_datetime") == null ? null : LocalDateTime.parse(rs.getString("checkout_datetime").replaceAll("\\s+", "T")),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name")
                 ));
             }
         } catch (Exception e) {
-            System.out.println("Error in readAll(): " + e.getMessage());
+            System.out.println("Error in readAll(): " + e);
+            e.printStackTrace();
         }
         return ls;
     }
 
     @Override
     public Boolean create(Room r) {
-        try {
-            Connector connector = Connector.getInstance();
-            String sql_txt = "INSERT INTO nhom4_room(room_number, floor_id, type_id) VALUE (?, ?, ?)";
-            ArrayList parameters = new ArrayList<>();
-            parameters.add(r.getNumber());
-            parameters.add(r.getFloorId());
-            parameters.add(r.getTypeId());
-            return connector.execute(sql_txt, parameters);
-        } catch (Exception e) {
-            System.out.println("Error in create(): " + e.getMessage());
-        }
         return false;
     }
 
     @Override
     public Boolean update(Room r) {
-        try {
-            Connector connector = Connector.getInstance();
-            String sql_txt = "UPDATE nhom4_room SET room_number = ?, floor_id = ?, type_id = ? WHERE room_id = ?";
-            ArrayList parameters = new ArrayList<>();
-            parameters.add(r.getNumber());
-            parameters.add(r.getFloorId());
-            parameters.add(r.getTypeId());
-            parameters.add(r.getId());
-            return connector.execute(sql_txt, parameters);
-        } catch (Exception e) {
-            System.out.println("Error in update(): " + e.getMessage());
-        }
         return false;
     }
 
     @Override
     public Boolean delete(Room r) {
-        try {
-            Connector connector = Connector.getInstance();
-            String sql_txt = "DELETE FROM nhom4_room WHERE room_id = ?";
-            ArrayList parameters = new ArrayList<>();
-            parameters.add(r.getId());
-            return connector.execute(sql_txt, parameters);
-        } catch (Exception e) {
-            System.out.println("Error in delete(): " + e.getMessage());
-        }
         return false;
     }
 
@@ -92,104 +65,103 @@ public class RoomRepository implements IRepository<Room> {
     public Room findById(int id) {
         try{
             Connector connector = Connector.getInstance();
-            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id WHERE r.room_id = ?";
+            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id LEFT JOIN nhom4_checkin_out ck ON r.checkin_out_id = ck.checkin_out_id LEFT JOIN nhom4_customer c ON ck.customer_id = c.customer_id WHERE r.room_id = ?";
             ArrayList parameters = new ArrayList<>();
             parameters.add(id);
             ResultSet rs = connector.query(sql_txt, parameters);
             while (rs.next()) {
                 Room r = new Room(
-                    rs.getInt("room_id"),
-                    rs.getString("room_number"),
-                    rs.getInt("floor_id"),
-                    rs.getString("floor_name"),
-                    rs.getInt("type_id"),
-                    rs.getString("type_name"),
-                    rs.getString("type_description"),
-                    rs.getDouble("first_hour_price"),
-                    rs.getDouble("next_hour_price"),
-                    rs.getDouble("day_price"),
-                    rs.getDouble("early_checkin_fee_1"),
-                    rs.getDouble("early_checkin_fee_2"),
-                    rs.getDouble("late_checkout_fee_1"),
-                    rs.getDouble("late_checkout_fee_2")
+                        rs.getInt("room_id"),
+                        rs.getString("room_number"),
+                        rs.getString("floor"),
+                        rs.getInt("type_id"),
+                        rs.getString("type_name"),
+                        rs.getString("type_description"),
+                        rs.getDouble("first_hour_price"),
+                        rs.getDouble("next_hour_price"),
+                        rs.getDouble("day_price"),
+                        rs.getDouble("early_checkin_fee_1"),
+                        rs.getDouble("early_checkin_fee_2"),
+                        rs.getDouble("late_checkout_fee_1"),
+                        rs.getDouble("late_checkout_fee_2"),
+                        rs.getInt("checkin_out_id"),
+                        rs.getString("checkin_datetime") == null ? null : LocalDateTime.parse(rs.getString("checkin_datetime").replaceAll("\\s+", "T")),
+                        rs.getString("checkout_datetime") == null ? null : LocalDateTime.parse(rs.getString("checkout_datetime").replaceAll("\\s+", "T")),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name")
                 );
                 return r;
             }
         } catch (Exception e) {
-            System.out.println("Error in findById(): " + e.getMessage());
+            System.out.println("Error in findById(): " + e);
+            e.printStackTrace();
         }
         return null;
     }
 
-
-    public ArrayList<RoomBooking> findByDate(LocalDateTime checkin, LocalDateTime checkout) {
-        ArrayList<RoomBooking> ls = new ArrayList<>();
-        try{
+    public ArrayList<Room> findByCheckinOutId(int id) {
+        ArrayList<Room> ls = new ArrayList<>();
+        try {
             Connector connector = Connector.getInstance();
-            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id WHERE r.room_id NOT IN (SELECT r.room_id FROM nhom4_room r LEFT JOIN nhom4_room_booking rb ON r.room_id = rb.room_id LEFT JOIN nhom4_booking b ON rb.booking_id = b.booking_id WHERE (b.checkin_date >= ? AND b.checkin_date <= ?) OR (b.checkout_date >= ? AND b.checkout_date <= ?) OR (b.checkin_date <= ? AND b.checkout_date >= ?));";
+            String sql_txt = "SELECT * FROM nhom4_room r LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id LEFT JOIN nhom4_checkin_out ck ON r.checkin_out_id = ck.checkin_out_id LEFT JOIN nhom4_customer c ON ck.customer_id = c.customer_id WHERE ck.checkin_out_id = ?;";
             ArrayList parameters = new ArrayList<>();
-            parameters.add(checkin);
-            parameters.add(checkout);
-            parameters.add(checkin);
-            parameters.add(checkout);
-            parameters.add(checkin);
-            parameters.add(checkout);
+            parameters.add(id);
             ResultSet rs = connector.query(sql_txt, parameters);
             while (rs.next()) {
-                ls.add(new RoomBooking(
-                    rs.getInt("room_id"),
-                    rs.getString("room_number"),
-                    rs.getInt("floor_id"),
-                    rs.getString("floor_name"),
-                    rs.getInt("type_id"),
-                    rs.getString("type_name"),
-                    rs.getString("type_description"),
-                    rs.getDouble("first_hour_price"),
-                    rs.getDouble("next_hour_price"),
-                    rs.getDouble("day_price"),
-                    rs.getDouble("early_checkin_fee_1"),
-                    rs.getDouble("early_checkin_fee_2"),
-                    rs.getDouble("late_checkout_fee_1"),
-                    rs.getDouble("late_checkout_fee_2"),
-                    null
+                ls.add(new Room(
+                        rs.getInt("room_id"),
+                        rs.getString("room_number"),
+                        rs.getString("floor"),
+                        rs.getInt("type_id"),
+                        rs.getString("type_name"),
+                        rs.getString("type_description"),
+                        rs.getDouble("first_hour_price"),
+                        rs.getDouble("next_hour_price"),
+                        rs.getDouble("day_price"),
+                        rs.getDouble("early_checkin_fee_1"),
+                        rs.getDouble("early_checkin_fee_2"),
+                        rs.getDouble("late_checkout_fee_1"),
+                        rs.getDouble("late_checkout_fee_2"),
+                        rs.getInt("checkin_out_id"),
+                        rs.getString("checkin_datetime") == null ? null : LocalDateTime.parse(rs.getString("checkin_datetime").replaceAll("\\s+", "T")),
+                        rs.getString("checkout_datetime") == null ? null : LocalDateTime.parse(rs.getString("checkout_datetime").replaceAll("\\s+", "T")),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name")
                 ));
             }
         } catch (Exception e) {
-            System.out.println("Error in findByDate(): " + e);
+            System.out.println("Error in readAll(): " + e);
+            e.printStackTrace();
         }
         return ls;
     }
 
-    public ArrayList<RoomBooking> findByBookingId(int bookingId) {
-        ArrayList<RoomBooking> ls = new ArrayList<>();
-        try{
+    public Boolean updateCheckinOutId(int roomId, int checkinOutId) {
+        try {
             Connector connector = Connector.getInstance();
-            String sql_txt = "SELECT * FROM nhom4_room_booking rb LEFT JOIN nhom4_room r ON rb.room_id = r.room_id LEFT JOIN nhom4_floor f ON r.floor_id = f.floor_id LEFT JOIN nhom4_room_type t ON r.type_id = t.type_id WHERE booking_id = ?;";
+            String sql_txt = "UPDATE nhom4_room SET checkin_out_id = ? WHERE room_id = ?";
             ArrayList parameters = new ArrayList<>();
-            parameters.add(bookingId);
-            ResultSet rs = connector.query(sql_txt, parameters);
-            while (rs.next()) {
-                ls.add(new RoomBooking(
-                    rs.getInt("room_id"),
-                    rs.getString("room_number"),
-                    rs.getInt("floor_id"),
-                    rs.getString("floor_name"),
-                    rs.getInt("type_id"),
-                    rs.getString("type_name"),
-                    rs.getString("type_description"),
-                    rs.getDouble("first_hour_price"),
-                    rs.getDouble("next_hour_price"),
-                    rs.getDouble("day_price"),
-                    rs.getDouble("early_checkin_fee_1"),
-                    rs.getDouble("early_checkin_fee_2"),
-                    rs.getDouble("late_checkout_fee_1"),
-                    rs.getDouble("late_checkout_fee_2"),
-                    rs.getDouble("sub_payment")
-                ));
-            }
+            parameters.add(checkinOutId);
+            parameters.add(roomId);
+            return connector.execute(sql_txt, parameters);
         } catch (Exception e) {
-            System.out.println("Error in findByDate(): " + e);
+            System.out.println("Error in updateCheckinOutId(): " + e);
+            e.printStackTrace();
         }
-        return ls;
+        return false;
+    }
+
+    public Boolean removeCheckinOutId(int roomId) {
+        try {
+            Connector connector = Connector.getInstance();
+            String sql_txt = "UPDATE nhom4_room SET checkin_out_id = NULL WHERE room_id = ?";
+            ArrayList parameters = new ArrayList<>();
+            parameters.add(roomId);
+            return connector.execute(sql_txt, parameters);
+        } catch (Exception e) {
+            System.out.println("Error in removeCheckinOutId(): " + e);
+            e.printStackTrace();
+        }
+        return false;
     }
 }

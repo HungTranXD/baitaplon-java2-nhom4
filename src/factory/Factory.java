@@ -1,9 +1,7 @@
 package factory;
 
 import enums.RepoType;
-import impls.BookingRepository;
-import impls.CustomerRepository;
-import impls.RoomRepository;
+import impls.*;
 import interfaces.IRepository;
 
 public class Factory {
@@ -11,7 +9,9 @@ public class Factory {
         switch (type) {
             case ROOM: return new RoomRepository();
             case CUSTOMER: return new CustomerRepository();
-            case BOOKING: return new BookingRepository();
+            case CHECKINOUT: return new CheckinOutRepository();
+            case SERVICE: return new ServiceRepository();
+            case CHECKINOUTSERVICE: return new CheckinOutServiceRepository();
             default: throw new IllegalArgumentException("Class not found!");
         }
     }

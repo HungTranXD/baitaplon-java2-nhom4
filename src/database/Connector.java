@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import static java.sql.Types.NULL;
 
 public class Connector {
-    public final static String connectionString = "jdbc:mysql://localhost:3306/eHotel?useUnicode=yes&characterEncoding=UTF-8";
+    public final static String connectionString = "jdbc:mysql://localhost:3306/new-ehotel?useUnicode=yes&characterEncoding=UTF-8";
     public final static String user = "root";
     public final static String pwd = "";
 

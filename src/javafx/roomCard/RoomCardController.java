@@ -1,11 +1,15 @@
 package javafx.roomCard;
 
-import entities.RoomToday;
+import entities.Room;
+import interfaces.MyListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+
+import java.time.format.DateTimeFormatter;
 
 public class RoomCardController {
     @FXML
@@ -35,49 +39,67 @@ public class RoomCardController {
     @FXML
     private ImageView imgIconStatus;
 
-    private RoomToday roomToday;
+    @FXML
+    void clickRoom(MouseEvent mouseEvent) {
+        myListener.onClickListener(room);
+    }
 
-    public void setData(RoomToday roomToday) {
-        this.roomToday = roomToday;
+    private Room room;
+    private MyListener myListener;
 
-        if (roomToday.getStatus().equals("Trống")) {
-            vbRoomDetail.setStyle("-fx-background-color: #43a047");
-            vbRoomInfo.setStyle("-fx-background-color: #ebfceb");
+    public void setData(Room r, MyListener myListener) {
+        this.room = r;
+        this.myListener = myListener;
+
+        if (r.getRoomStatus().equals("Trống")) {
+            vbRoomInfo.setStyle("-fx-background-color: #43a047; -fx-background-radius: 10px 0 0 10px");
+            vbRoomDetail.setStyle("-fx-background-color: #ebfceb; -fx-background-radius: 0 10px 10px 0");
+            lbCustomerName.setStyle("-fx-text-fill: #43a047; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
             Image icon = new Image(getClass().getResourceAsStream("/icon/empty.png"));
             imgIconStatus.setImage(icon);
-        } else if (roomToday.getStatus().equals("Đã đặt")) {
-            vbRoomDetail.setStyle("-fx-background-color: #1e88e5");
-            vbRoomInfo.setStyle("-fx-background-color: #e0ecfd");
-            Image icon = new Image(getClass().getResourceAsStream("/icon/empty.png"));
+        } else if (r.getRoomStatus().equals("Đã đặt")) {
+            vbRoomInfo.setStyle("-fx-background-color: #1e88e5; -fx-background-radius: 10px 0 0 10px");
+            vbRoomDetail.setStyle("-fx-background-color: #e0ecfd; -fx-background-radius: 0 10px 10px 0");
+            lbCustomerName.setStyle("-fx-text-fill: #1e88e5; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
+            Image icon = new Image(getClass().getResourceAsStream("/icon/booked.png"));
             imgIconStatus.setImage(icon);
-        } else if (roomToday.getStatus().equals("Chưa đến")) {
-            vbRoomDetail.setStyle("-fx-background-color: #9c27b0");
-            vbRoomInfo.setStyle("-fx-background-color: #f7e5fd");
-            Image icon = new Image(getClass().getResourceAsStream("/icon/empty.png"));
+        } else if (r.getRoomStatus().equals("Chưa đến")) {
+            vbRoomInfo.setStyle("-fx-background-color: #9c27b0; -fx-background-radius: 10px 0 0 10px");
+            vbRoomDetail.setStyle("-fx-background-color: #f7e5fd;-fx-background-radius: 0 10px 10px 0");
+            lbCustomerName.setStyle("-fx-text-fill: #9c27b0; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
+            Image icon = new Image(getClass().getResourceAsStream("/icon/booked.png"));
             imgIconStatus.setImage(icon);
-        } else if (roomToday.getStatus().equals("Có khách")) {
-            vbRoomDetail.setStyle("-fx-background-color: #d9390d");
-            vbRoomInfo.setStyle("-fx-background-color: #ffebe6");
-            Image icon = new Image(getClass().getResourceAsStream("/icon/empty.png"));
+        } else if (r.getRoomStatus().equals("Có khách")) {
+            vbRoomInfo.setStyle("-fx-background-color: #d9390d; -fx-background-radius: 10px 0 0 10px");
+            vbRoomDetail.setStyle("-fx-background-color: #ffebe6; -fx-background-radius: 0 10px 10px 0");
+            lbCustomerName.setStyle("-fx-text-fill: #d9390d; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
+            Image icon = new Image(getClass().getResourceAsStream("/icon/occupied.png"));
             imgIconStatus.setImage(icon);
-        } else if (roomToday.getStatus().equals("Chưa đi")) {
-            vbRoomDetail.setStyle("-fx-background-color: #fc9540");
-            vbRoomInfo.setStyle("-fx-background-color: #ffeee3");
-            Image icon = new Image(getClass().getResourceAsStream("/icon/empty.png"));
+        } else if (r.getRoomStatus().equals("Chưa đi")) {
+            vbRoomInfo.setStyle("-fx-background-color: #fc9540; -fx-background-radius: 10px 0 0 10px");
+            vbRoomDetail.setStyle("-fx-background-color: #ffeee3; -fx-background-radius: 0 10px 10px 0");
+            lbCustomerName.setStyle("-fx-text-fill: #fc9540; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
+            Image icon = new Image(getClass().getResourceAsStream("/icon/outdated.png"));
             imgIconStatus.setImage(icon);
+        } else {
+            vbRoomInfo.setStyle("-fx-background-color: #696969; -fx-background-radius: 10px 0 0 10px");
+            vbRoomDetail.setStyle("-fx-background-color: #d2d2d2; -fx-background-radius: 0 10px 10px 0");
+            lbCustomerName.setStyle("-fx-text-fill: #696969; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
+            Image icon = new Image(getClass().getResourceAsStream("/icon/error.png"));
         }
 
-        lbRoomType.setText(roomToday.getType());
-        lbRoomNumber.setText(roomToday.getNumber());
+        lbRoomType.setText(r.getTypeName());
+        lbRoomNumber.setText(r.getRoomNumber());
 
-        if (roomToday.getStatus().equals("Trống")) {
+        if (r.getRoomStatus().equals("Trống")) {
             vbRoomDetail.getChildren().removeAll(lbCustomerName, lbCheckin, lbCheckout);
-            lbRoomStatus.setText(roomToday.getStatus());
+            lbRoomStatus.setText(r.getRoomStatus());
         } else {
             vbRoomDetail.getChildren().remove(lbRoomStatus);
-            lbCustomerName.setText(roomToday.getCustomer().getCustomerName());
-            lbCheckin.setText("Đến: " + roomToday.getCheckin());
-            lbCheckout.setText("Đi:  " + roomToday.getCheckout());
+            lbCustomerName.setText(r.getCustomerName());
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            lbCheckin.setText("Đến: " + (r.getCheckinDatetime() == null ? "" : dtf.format(r.getCheckinDatetime())));
+            lbCheckout.setText("Đi:    " + (r.getCheckinDatetime() == null ? "" : dtf.format(r.getCheckoutDatetime())));
         }
 
     }
