@@ -145,6 +145,11 @@ public class HomeController implements Initializable {
 
     private MyListener myListener;
 
+    /* ------------------------------------------------------------------- */
+    /* -------------------- 2) PANE - Customer list ---------------------- */
+    /* ------------------------------------------------------------------- */
+
+
 
 
 
@@ -170,6 +175,10 @@ public class HomeController implements Initializable {
 
         //Encapsulate all method to initialize roomsPlan into a single method and run with type and status = all
         //initRoomsPlan(roomType, roomStatus);
+        scrollRooms.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY() * 0.01;
+            scrollRooms.setVvalue(scrollRooms.getVvalue() - deltaY);
+        });
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
         Runnable task = () -> {
             Platform.runLater(new Runnable() {
@@ -511,5 +520,9 @@ public class HomeController implements Initializable {
 
     }
 
+
+    /* ------------------------------------------------------------------- */
+    /* -------------------- 2) PANE - Customer list ---------------------- */
+    /* ------------------------------------------------------------------- */
 
 }
