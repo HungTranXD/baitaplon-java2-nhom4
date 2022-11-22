@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -139,5 +140,26 @@ public class CustomerRepository implements IRepository<Customer> {
             System.out.println("Error in findByIdNumber(): " + e);
         }
         return null;
+    }
+
+    public ArrayList<Customer> findCustomer(String cusName, String cusIdNumber, String cusTel, LocalDateTime checkin, LocalDateTime checkout) {
+        ArrayList<Customer> ls = new ArrayList<>();
+        try {
+            Connector connector = Connector.getInstance();
+            String sql_txt = "SELECT * FROM nhom4_customer c LEFT JOIN nhom4_checkin_out ck ON c.customer_id = ck.customer_id";
+            ResultSet rs = connector.query(sql_txt);
+            while (rs.next()) {
+                ls.add(new Customer(
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_idnumber"),
+                        rs.getString("customer_tel")
+                ));
+            }
+        } catch (Exception e) {
+            System.out.println("Error in readAll(): " + e);
+            e.printStackTrace();
+        }
+        return ls;
     }
 }

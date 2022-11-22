@@ -5,6 +5,7 @@ import enums.RepoType;
 import factory.Factory;
 import impls.RoomRepository;
 import interfaces.MyListener;
+import javafx.Main;
 import javafx.application.Platform;
 import javafx.checkin.CheckinController;
 import javafx.checkout.CheckoutController;
@@ -150,6 +151,35 @@ public class HomeController implements Initializable {
     /* ------------------------------------------------------------------- */
     /* -------------------- 2) PANE - Customer list ---------------------- */
     /* ------------------------------------------------------------------- */
+    @FXML
+    private TextField txtCusName;
+    @FXML
+    private TextField txtCusTel;
+    @FXML
+    private TextField txtCusIdNumber;
+    @FXML
+    private DatePicker dpCusCheckinDate;
+    @FXML
+    private DatePicker dpCusCheckoutDate;
+    @FXML
+    private TableView<Customer> tbvCustomer;
+    @FXML
+    private TableColumn<Customer, String> tbvColCusName;
+    @FXML
+    private TableColumn<Customer, String> tbvColCusTel;
+    @FXML
+    private TableColumn<Customer, String> tbvColCusIdNumber;
+    @FXML
+    private TableColumn<Customer, Button> tbvColCusEdit;
+    @FXML
+    private TableColumn<Customer, Button> tbvColCusDelete;
+
+    //Variables for customer list pane
+    private LocalDateTime checkin;
+    private LocalDateTime checkout;
+
+
+
 
 
 
@@ -212,6 +242,13 @@ public class HomeController implements Initializable {
         tbvColRoomSelectedNextHour.setCellValueFactory(new PropertyValueFactory<>("nextHourPrice"));
         tbvColRoomSelectedDayPrice.setCellValueFactory(new PropertyValueFactory<>("dayPrice"));
         tbvColRoomSelectedRemove.setCellValueFactory(new PropertyValueFactory<>("removeBtn"));
+
+
+        /* ------------------------------------------------------------------- */
+        /* -------------------- 2) PANE - Customer list ---------------------- */
+        /* ------------------------------------------------------------------- */
+        dpCusCheckinDate.setValue(LocalDate.now());
+        dpCusCheckoutDate.setValue(LocalDate.now());
 
     }
 
@@ -526,6 +563,16 @@ public class HomeController implements Initializable {
     /* ------------------------------------------------------------------- */
     /* -------------------- 2) PANE - Customer list ---------------------- */
     /* ------------------------------------------------------------------- */
+    @FXML
+    void findCustomers(ActionEvent event) {
+        String customerName = txtCusName.getText();
+        String customerIdNumber = txtCusIdNumber.getText();
+        String customerTel = txtCusTel.getText();
+        LocalDateTime checkinDatetime = dpCusCheckinDate.getValue() == null ? null : LocalDateTime.of(dpCusCheckinDate.getValue(), LocalTime.of(0,0,0));
+        LocalDateTime checkoutDatetime = dpCusCheckoutDate.getValue() == null ? null : LocalDateTime.of(dpCusCheckoutDate.getValue(), LocalTime.of(23,59,59));
+        System.out.println(customerName + "-" + customerIdNumber + "-" + customerTel + "-" + checkinDatetime + "-" + checkoutDatetime);
+
+    }
 
 
 //    private void closeWindow(ActionEvent event) {
