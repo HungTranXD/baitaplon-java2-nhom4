@@ -15,10 +15,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.roomCard.RoomCardController;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.net.URL;
@@ -525,4 +527,10 @@ public class HomeController implements Initializable {
     /* -------------------- 2) PANE - Customer list ---------------------- */
     /* ------------------------------------------------------------------- */
 
+
+//    private void closeWindow(ActionEvent event) {
+//        Node source = (Node) event.getSource();
+//        Stage stage = (Stage) source.getScene().getWindow();
+//        stage.close();
+//    }
 }
