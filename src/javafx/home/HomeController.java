@@ -3,12 +3,15 @@ package javafx.home;
 import entities.*;
 import enums.RepoType;
 import factory.Factory;
+import impls.CustomerRepository;
 import impls.RoomRepository;
 import interfaces.MyListener;
 import javafx.Main;
 import javafx.application.Platform;
 import javafx.checkin.CheckinController;
 import javafx.checkout.CheckoutController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,9 +37,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 public class HomeController implements Initializable {
+    @FXML
+    ChoiceBox<String> cbFacility;
 
     @FXML
     private AnchorPane pnContact;
@@ -106,7 +112,11 @@ public class HomeController implements Initializable {
     private ScrollPane scrollRooms;
 
     @FXML
-    private GridPane gridRooms;
+    private GridPane gridRoomsFloor1;
+    @FXML
+    private GridPane gridRoomsFloor2;
+    @FXML
+    private GridPane gridRoomsFloor3;
 
     @FXML
     private TableView<Room> tbvRoomsSelected;
@@ -169,10 +179,6 @@ public class HomeController implements Initializable {
     private TableColumn<Customer, String> tbvColCusTel;
     @FXML
     private TableColumn<Customer, String> tbvColCusIdNumber;
-    @FXML
-    private TableColumn<Customer, Button> tbvColCusEdit;
-    @FXML
-    private TableColumn<Customer, Button> tbvColCusDelete;
 
     //Variables for customer list pane
     private LocalDateTime checkin;
@@ -188,6 +194,8 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        cbFacility.getItems().add("Cơ sở 1 - Cầu Giấy");
+        cbFacility.setValue("Cơ sở 1 - Cầu Giấy");
         displayTimeNow();
         /* ------------------------------------------------------------------- */
         /* ------------------- 0) SIDE MENU - Set default -------------------- */
@@ -208,7 +216,7 @@ public class HomeController implements Initializable {
         //Encapsulate all method to initialize roomsPlan into a single method and run with type and status = all
         //initRoomsPlan(roomType, roomStatus);
         scrollRooms.getContent().setOnScroll(scrollEvent -> {
-            double deltaY = scrollEvent.getDeltaY() * 0.01;
+            double deltaY = scrollEvent.getDeltaY() * 0.001;
             scrollRooms.setVvalue(scrollRooms.getVvalue() - deltaY);
         });
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
@@ -216,8 +224,6 @@ public class HomeController implements Initializable {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-//                    roomsPlanToday.clear();
-//                    gridRooms.getChildren().clear();
                     initRoomsPlan(roomType, roomStatus);
                 }
             });
@@ -249,6 +255,13 @@ public class HomeController implements Initializable {
         /* ------------------------------------------------------------------- */
         dpCusCheckinDate.setValue(LocalDate.now());
         dpCusCheckoutDate.setValue(LocalDate.now());
+
+        //Initialize customer table
+        tbvColCusName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        tbvColCusTel.setCellValueFactory(new PropertyValueFactory<>("customerTel"));
+        tbvColCusIdNumber.setCellValueFactory(new PropertyValueFactory<>("customerIdNumber"));
+
+        findCustomers(null);
 
     }
 
@@ -358,8 +371,6 @@ public class HomeController implements Initializable {
             btType2.getStyleClass().remove("button2-focused");
             btType3.getStyleClass().remove("button2-focused");
         }
-//        roomsPlanToday.clear();
-//        gridRooms.getChildren().clear();
         initRoomsPlan(roomType, roomStatus);
     }
 
@@ -394,8 +405,6 @@ public class HomeController implements Initializable {
             btStatusEmpty.getStyleClass().remove("button-green-focused");
             btStatusOccupied.getStyleClass().remove("button-red-focused");
         }
-//        roomsPlanToday.clear();
-//        gridRooms.getChildren().clear();
         initRoomsPlan(roomType, roomStatus);
     }
     // -- End of Filter rooms --
@@ -403,7 +412,9 @@ public class HomeController implements Initializable {
 
     public void initRoomsPlan(String roomType, String roomStatus) {
         roomsPlanToday.clear();
-        gridRooms.getChildren().clear();
+        gridRoomsFloor1.getChildren().clear();
+        gridRoomsFloor2.getChildren().clear();
+        gridRoomsFloor3.getChildren().clear();
         //Get all room from database
         RoomRepository rr = (RoomRepository) Factory.createRepository(RepoType.ROOM);
 
@@ -484,23 +495,63 @@ public class HomeController implements Initializable {
             }
         };
 
-        //Specify number of rows and columns in grid
-        int column = 0;
-        int row = 1;
+
         try {
-            for (int i = 0; i < roomsPlanToday.size(); i++) {
+            //Load roomCard fxml to grid - FLOOR 1:
+            int column1 = 0;
+            int row1 = 1;
+            List<Room> roomsPlanFloor1 = roomsPlanToday.stream().filter(room -> room.getFloor().equals("Tầng 1")).collect(Collectors.toList());
+            for (int i = 0; i < roomsPlanFloor1.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("../roomCard/roomCard.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 RoomCardController roomCardController = fxmlLoader.getController();
-                roomCardController.setData(roomsPlanToday.get(i), myListener);
+                roomCardController.setData(roomsPlanFloor1.get(i), myListener);
 
-                if (column == 4) {
-                    column = 0;
-                    row++;
+                if (column1 == 4) {
+                    column1 = 0;
+                    row1++;
                 }
-                gridRooms.add(anchorPane, column++, row);
+                gridRoomsFloor1.add(anchorPane, column1++, row1);
+                GridPane.setMargin(anchorPane, new Insets(7, 10, 7, 10));
+            }
+            //Load roomCard fxml to grid - FLOOR 2:
+            int column2 = 0;
+            int row2 = 1;
+            List<Room> roomsPlanFloor2 = roomsPlanToday.stream().filter(room -> room.getFloor().equals("Tầng 2")).collect(Collectors.toList());
+            for (int i = 0; i < roomsPlanFloor2.size(); i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("../roomCard/roomCard.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                RoomCardController roomCardController = fxmlLoader.getController();
+                roomCardController.setData(roomsPlanFloor2.get(i), myListener);
+
+                if (column2 == 4) {
+                    column2 = 0;
+                    row2++;
+                }
+                gridRoomsFloor2.add(anchorPane, column2++, row2);
+                GridPane.setMargin(anchorPane, new Insets(7, 10, 7, 10));
+            }
+            //Load roomCard fxml to grid - FLOOR 2:
+            int column3 = 0;
+            int row3 = 1;
+            List<Room> roomsPlanFloor3 = roomsPlanToday.stream().filter(room -> room.getFloor().equals("Tầng 3")).collect(Collectors.toList());
+            for (int i = 0; i < roomsPlanFloor3.size(); i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("../roomCard/roomCard.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                RoomCardController roomCardController = fxmlLoader.getController();
+                roomCardController.setData(roomsPlanFloor3.get(i), myListener);
+
+                if (column3 == 4) {
+                    column3 = 0;
+                    row3++;
+                }
+                gridRoomsFloor3.add(anchorPane, column3++, row3);
                 GridPane.setMargin(anchorPane, new Insets(7, 10, 7, 10));
             }
         } catch (Exception e) {
@@ -571,7 +622,9 @@ public class HomeController implements Initializable {
         LocalDateTime checkinDatetime = dpCusCheckinDate.getValue() == null ? null : LocalDateTime.of(dpCusCheckinDate.getValue(), LocalTime.of(0,0,0));
         LocalDateTime checkoutDatetime = dpCusCheckoutDate.getValue() == null ? null : LocalDateTime.of(dpCusCheckoutDate.getValue(), LocalTime.of(23,59,59));
         System.out.println(customerName + "-" + customerIdNumber + "-" + customerTel + "-" + checkinDatetime + "-" + checkoutDatetime);
-
+        CustomerRepository cr = (CustomerRepository) Factory.createRepository(RepoType.CUSTOMER);
+        ObservableList<Customer> customers = FXCollections.observableArrayList(cr.findCustomer(customerName, customerIdNumber, customerTel, checkinDatetime, checkoutDatetime));
+        tbvCustomer.setItems(customers);
     }
 
 

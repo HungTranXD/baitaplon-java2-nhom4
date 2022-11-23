@@ -142,12 +142,21 @@ public class CustomerRepository implements IRepository<Customer> {
         return null;
     }
 
+    //Search customers by multiple criteria (name, idNumber, tel, checkinDate, checkoutDate)
     public ArrayList<Customer> findCustomer(String cusName, String cusIdNumber, String cusTel, LocalDateTime checkin, LocalDateTime checkout) {
         ArrayList<Customer> ls = new ArrayList<>();
         try {
             Connector connector = Connector.getInstance();
-            String sql_txt = "SELECT * FROM nhom4_customer c LEFT JOIN nhom4_checkin_out ck ON c.customer_id = ck.customer_id";
-            ResultSet rs = connector.query(sql_txt);
+            String sql_txt = "SELECT * FROM nhom4_customer WHERE customer_id IN (SELECT c.customer_id FROM nhom4_customer c LEFT JOIN nhom4_checkin_out ck ON c.customer_id = ck.customer_id WHERE c.customer_name LIKE ? AND c.customer_idnumber LIKE ? AND c.customer_tel LIKE ? AND ck.checkin_datetime >= ? AND ck.checkout_datetime <= ?)";
+            ArrayList parameters = new ArrayList<>();
+            parameters.add('%' + cusName + '%');
+            parameters.add('%' + cusIdNumber + '%');
+            parameters.add('%' + cusTel + '%');
+            if (checkin == null) checkin =  LocalDateTime.of(1900, 1, 1, 0, 0);
+            parameters.add(checkin);
+            if (checkout == null) checkout =  LocalDateTime.of(2100, 1, 1, 0, 0);
+            parameters.add(checkout);
+            ResultSet rs = connector.query(sql_txt, parameters);
             while (rs.next()) {
                 ls.add(new Customer(
                         rs.getInt("customer_id"),

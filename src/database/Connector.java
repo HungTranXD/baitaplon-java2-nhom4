@@ -50,7 +50,7 @@ public class Connector {
     public ResultSet query(String sql, ArrayList parameters){
         try {
             PreparedStatement stt = this.getPreparedStatement(sql);
-            for(int i=0;i<parameters.size();i++){
+            for(int i=0; i<parameters.size(); i++){
                 if(parameters.get(i) instanceof String){
                     stt.setString(i+1,(String)parameters.get(i));
                 }else if(parameters.get(i) instanceof Integer){
