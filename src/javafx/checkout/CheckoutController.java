@@ -52,6 +52,12 @@ public class CheckoutController implements Initializable {
     private TextField txtBookingHourEnd;
 
     @FXML
+    private Button btTime1;
+
+    @FXML
+    private Button btTime2;
+
+    @FXML
     private TableView<Room> tbvRoomsBooked;
 
     @FXML
@@ -148,6 +154,7 @@ public class CheckoutController implements Initializable {
         //--- checkout datetime will be the checkout datetime
         checkoutDate = LocalDate.now();
         checkoutTime = LocalTime.now();
+
         //--- set datetime input:
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         dpBookingDateStart.setValue(checkinDate);
@@ -320,15 +327,32 @@ public class CheckoutController implements Initializable {
         }
     }
 
+    @FXML
+    void changeCheckoutDatetime(ActionEvent event) {
+        //--- 2 buttons to choose time checkout
+
+//        btTime1.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
+//        btTime2.setStyle("-fx-background-color: transparent;");
+//        btTime1.setOnAction(event -> {
+//            btTime1.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
+//            btTime2.setStyle("-fx-background-color: transparent;");
+//            checkoutDate = LocalDate.now();
+//            checkoutTime = LocalTime.now();
+//        });
+//        btTime2.setOnAction(event -> {
+//            btTime2.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
+//            btTime1.setStyle("-fx-background-color: transparent;");
+//            checkoutDate = ck.getCheckoutDatetime().toLocalDate();
+//            checkoutTime = ck.getCheckoutDatetime().toLocalTime();
+//        });
+    }
+
     private void closeWindow(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
 
-    @FXML
-    void closeAndRefreshParent(ActionEvent event) {
-        closeWindow(event);
-    }
+
 
 }

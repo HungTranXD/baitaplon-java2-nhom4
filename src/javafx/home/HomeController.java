@@ -197,6 +197,12 @@ public class HomeController implements Initializable {
         cbFacility.getItems().add("Cơ sở 1 - Cầu Giấy");
         cbFacility.setValue("Cơ sở 1 - Cầu Giấy");
         displayTimeNow();
+        Main.rootStage.setOnHidden(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                stop = true;
+            }
+        });
         /* ------------------------------------------------------------------- */
         /* ------------------- 0) SIDE MENU - Set default -------------------- */
         /* ------------------------------------------------------------------- */

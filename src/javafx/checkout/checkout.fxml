@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="830.0" prefWidth="400.0" stylesheets="@../home/home.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.checkout.CheckoutController">
+<AnchorPane prefHeight="860.0" prefWidth="400.0" stylesheets="@../home/home.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.checkout.CheckoutController">
    <children>
       <VBox layoutX="163.0" layoutY="58.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -31,11 +31,26 @@
                   <DatePicker fx:id="dpBookingDateStart" disable="true" editable="false" prefHeight="25.0" prefWidth="127.0" />
                   <TextField fx:id="txtBookingHourStart" alignment="CENTER" disable="true" editable="false" prefHeight="25.0" prefWidth="55.0" promptText="hh:mm" />
                   <Label text="&gt;" />
-                  <DatePicker fx:id="dpBookingDateEnd" disable="true" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="123.0" />
-                  <TextField fx:id="txtBookingHourEnd" alignment="CENTER" disable="true" editable="false" layoutX="109.0" layoutY="10.0" prefHeight="25.0" prefWidth="54.0" promptText="hh:mm" />
+                  <DatePicker fx:id="dpBookingDateEnd" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="123.0" />
+                  <TextField fx:id="txtBookingHourEnd" alignment="CENTER" editable="false" layoutX="109.0" layoutY="10.0" prefHeight="25.0" prefWidth="54.0" promptText="hh:mm" />
                </children>
             </HBox>
-            <AnchorPane prefHeight="148.0" prefWidth="380.0" style="-fx-border-color: #dddddd; -fx-border-width: 0 0 1px 0;">
+            <HBox alignment="CENTER" prefHeight="18.0" prefWidth="391.0" spacing="20.0">
+               <children>
+                  <Label text="* Chọn thời điểm trả phòng">
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="221.0" style="-fx-background-color: #cccccc; -fx-background-radius: 10px;">
+                     <children>
+                        <Button fx:id="btTime1" mnemonicParsing="false" onAction="#changeCheckoutDatetime" prefHeight="20.0" prefWidth="110.0" style="-fx-background-radius: 10px;" text="Hiện tại" />
+                        <Button fx:id="btTime2" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#changeCheckoutDatetime" prefHeight="20.0" prefWidth="110.0" style="-fx-background-radius: 10px;" text="Dự kiến ban đầu" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <AnchorPane prefHeight="151.0" prefWidth="391.0" style="-fx-border-color: #dddddd; -fx-border-width: 0 0 1px 0;">
                <children>
                   <TableView fx:id="tbvRoomsBooked" prefHeight="124.0" prefWidth="391.0">
                     <columns>
@@ -111,7 +126,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </AnchorPane>
-            <AnchorPane prefHeight="69.0" prefWidth="391.0">
+            <AnchorPane prefHeight="60.0" prefWidth="391.0">
                <children>
                   <ComboBox fx:id="cbPaymentMethod" layoutY="25.0" prefHeight="25.0" prefWidth="391.0" promptText="Phương thức thanh toán" style="-fx-background-color: #dddddd; -fx-border-radius: 5px;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0" />
                   <Label text="Tổng thanh toán" AnchorPane.leftAnchor="0.0">
