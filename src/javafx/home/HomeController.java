@@ -5,6 +5,7 @@ import enums.RepoType;
 import factory.Factory;
 import impls.CustomerRepository;
 import impls.RoomRepository;
+import impls.RoomTypeRepository;
 import interfaces.MyListener;
 import javafx.Main;
 import javafx.application.Platform;
@@ -118,42 +119,6 @@ public class HomeController implements Initializable {
     @FXML
     private GridPane gridRoomsFloor3;
 
-    @FXML
-    private TableView<Room> tbvRoomsSelected;
-
-    @FXML
-    private TableColumn<Room, String> tbvColRoomSelectedName;
-
-    @FXML
-    private TableColumn<Room, String> tbvColRoomSelectedFloor;
-
-    @FXML
-    private TableColumn<Room, String> tbvColRoomSelectedType;
-
-    @FXML
-    private TableColumn<Room, Double> tbvColRoomSelected1stHour;
-
-    @FXML
-    private TableColumn<Room, Double> tbvColRoomSelectedNextHour;
-
-    @FXML
-    private TableColumn<Room, Double> tbvColRoomSelectedDayPrice;
-
-    @FXML
-    private TableColumn<Room, Button> tbvColRoomSelectedRemove;
-
-    @FXML
-    private DatePicker dpCheckinDate;
-
-    @FXML
-    private TextField txtCheckinTime;
-
-    @FXML
-    private DatePicker dpCheckoutDate;
-
-    @FXML
-    private TextField txtCheckoutTime;
-
     private ArrayList<Room> roomsPlanToday = new ArrayList<>();
 
     private MyListener myListener;
@@ -183,6 +148,36 @@ public class HomeController implements Initializable {
     //Variables for customer list pane
     private LocalDateTime checkin;
     private LocalDateTime checkout;
+
+    /* ------------------------------------------------------------------- */
+    /* -------------------- 3) PANE - Rooms & Price ---------------------- */
+    /* ------------------------------------------------------------------- */
+    @FXML
+    private TableView<RoomType> tbvPrice;
+
+    @FXML
+    private TableColumn<RoomType, String> tbvPrice_TypeCol;
+
+    @FXML
+    private TableColumn<RoomType, Double> tbvPrice_FirstHourCol;
+
+    @FXML
+    private TableColumn<RoomType, Double> tbvPrice_NextHourCol;
+
+    @FXML
+    private TableColumn<RoomType, Double> tbvPrice_DayCol;
+
+    @FXML
+    private TableColumn<RoomType, Double> tbvPrice_Early1Col;
+
+    @FXML
+    private TableColumn<RoomType, Double> tbvPrice_Early2Col;
+
+    @FXML
+    private TableColumn<RoomType, Double> tbvPrice_Late1Col;
+
+    @FXML
+    private TableColumn<RoomType, Double> tbvPrice_Late2Col;
 
 
 
@@ -237,25 +232,6 @@ public class HomeController implements Initializable {
         ScheduledFuture<?> scheduledFuture = ses.scheduleAtFixedRate(task,0,10000, TimeUnit.SECONDS);
 
 
-        //Initialize Selected rooms table
-        tbvRoomsSelected.setItems(CheckinController.roomsSelected);
-
-        //Set value for checkin/out input
-        dpCheckinDate.setValue(LocalDate.now());
-        txtCheckinTime.setText("14:00");
-        dpCheckoutDate.setValue(LocalDate.now().plusDays(1));
-        txtCheckoutTime.setText("12:00");
-
-        //Initialize selectedRoom table
-        tbvColRoomSelectedName.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
-        tbvColRoomSelectedFloor.setCellValueFactory(new PropertyValueFactory<>("floor"));
-        tbvColRoomSelectedType.setCellValueFactory(new PropertyValueFactory<>("typeName"));
-        tbvColRoomSelected1stHour.setCellValueFactory(new PropertyValueFactory<>("firstHourPrice"));
-        tbvColRoomSelectedNextHour.setCellValueFactory(new PropertyValueFactory<>("nextHourPrice"));
-        tbvColRoomSelectedDayPrice.setCellValueFactory(new PropertyValueFactory<>("dayPrice"));
-        tbvColRoomSelectedRemove.setCellValueFactory(new PropertyValueFactory<>("removeBtn"));
-
-
         /* ------------------------------------------------------------------- */
         /* -------------------- 2) PANE - Customer list ---------------------- */
         /* ------------------------------------------------------------------- */
@@ -269,6 +245,24 @@ public class HomeController implements Initializable {
 
         findCustomers(null);
 
+
+        /* ------------------------------------------------------------------- */
+        /* -------------------- 3) PANE - Rooms & Price ---------------------- */
+        /* ------------------------------------------------------------------- */
+        //Get room types and their price from database
+        RoomTypeRepository rtr = (RoomTypeRepository) Factory.createRepository(RepoType.ROOMTYPE);
+        ObservableList<RoomType> roomTypesAndPrice = FXCollections.observableArrayList(rtr.readAll());
+
+        tbvPrice_TypeCol.setCellValueFactory(new PropertyValueFactory<>("typeName"));
+        tbvPrice_FirstHourCol.setCellValueFactory(new PropertyValueFactory<>("firstHourPrice"));
+        tbvPrice_NextHourCol.setCellValueFactory(new PropertyValueFactory<>("nextHourPrice"));
+        tbvPrice_DayCol.setCellValueFactory(new PropertyValueFactory<>("dayPrice"));
+        tbvPrice_Early1Col.setCellValueFactory(new PropertyValueFactory<>("earlyCheckinFee1"));
+        tbvPrice_Early2Col.setCellValueFactory(new PropertyValueFactory<>("earlyCheckinFee2"));
+        tbvPrice_Late1Col.setCellValueFactory(new PropertyValueFactory<>("lateCheckoutFee1"));
+        tbvPrice_Late2Col.setCellValueFactory(new PropertyValueFactory<>("lateCheckoutFee2"));
+
+        tbvPrice.setItems(roomTypesAndPrice);
     }
 
 
@@ -458,21 +452,30 @@ public class HomeController implements Initializable {
             public void onClickListener(Room r) {
                 //1) IF the room is EMPTY we add this listener:
                 if(r.getRoomStatus().equals("Trống")) {
-                    //First check if arrayList have the same roomId
-                    boolean checkRoomIdFlag = false;
-                    for (Room selectedRoom: CheckinController.roomsSelected) {
-                        if (selectedRoom.getRoomId().equals(r.getRoomId())) {
-                            checkRoomIdFlag = true;
-                            break;
+                    //Ask if user want to go to checkin window
+                    Alert confirmation1 = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation1.setTitle("Confirmation");
+                    confirmation1.setHeaderText("Nhận phòng này?");
+
+                    Optional<ButtonType> result = confirmation1.showAndWait();
+                    if(result.get() == ButtonType.OK){ //if user chose Ok then proceed:
+                        try { //handle display() method exception
+                            CheckinController.roomsSelected.add(r);
+                            CheckinController ckInController = new CheckinController();
+                            ckInController.window.setOnHidden(event1 -> {
+                                //Refresh parent
+                                initRoomsPlan(roomType, roomStatus);
+                                //Clear roomSelected array and subsequently clear tableView tbvRoomsSelected
+                                CheckinController.roomsSelected.clear();
+                            });
+                            ckInController.display();
+                        } catch (Exception e) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error!");
+                            alert.setHeaderText(e.getMessage());
+                            alert.show();
+                            e.printStackTrace();
                         }
-                    }
-                    if(checkRoomIdFlag) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText("Phòng " + r.getRoomNumber() + " đã được chọn");
-                        alert.show();
-                    } else {
-                        CheckinController.roomsSelected.add(r);
                     }
 
                 //2) IF the room is OCCUPIED we add this listener:
@@ -565,57 +568,6 @@ public class HomeController implements Initializable {
         }
     }
 
-    @FXML
-    void goToCheckinWindow(ActionEvent event) {
-        try {
-            CheckinController.checkinDate = dpCheckinDate.getValue();
-            CheckinController.checkinTime = LocalTime.parse(txtCheckinTime.getText());
-            CheckinController.checkoutDate = dpCheckoutDate.getValue();
-            CheckinController.checkoutTime = LocalTime.parse(txtCheckoutTime.getText());
-
-            //Check if is any rooms have been selected
-            if (CheckinController.roomsSelected.isEmpty()) {
-                throw new Exception("Chưa chọn phòng nào!");
-            }
-
-            //Calculate subPayment for each room selected
-            LocalDate checkinDate = dpCheckinDate.getValue();
-            LocalTime checkinTime = LocalTime.parse(txtCheckinTime.getText());
-            LocalDateTime checkinDatetime = LocalDateTime.of(checkinDate, checkinTime);
-
-            LocalDate checkoutDate = dpCheckoutDate.getValue();
-            LocalTime checkoutTime = LocalTime.parse(txtCheckoutTime.getText());
-            LocalDateTime checkoutDatetime = LocalDateTime.of(checkoutDate, checkoutTime);
-
-            if(checkoutDatetime.isBefore(checkinDatetime)) throw new Exception("Thời gian checkout phải sau checkin!");
-
-            for(Room r: CheckinController.roomsSelected) {
-                r.calculateSubPayment(checkinDatetime, checkoutDatetime);
-            }
-
-            CheckinController checkinController = new CheckinController();
-            checkinController.window.setOnHidden(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    //Refresh parent
-                    initRoomsPlan(roomType, roomStatus);
-                    //Clear roomSelected array and subsequently clear tableView tbvRoomsSelected
-                    CheckinController.roomsSelected.clear();
-                }
-            });
-            checkinController.display();
-
-
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error!");
-            alert.setHeaderText(e.getMessage());
-            alert.show();
-            e.printStackTrace();
-        }
-
-    }
-
 
     /* ------------------------------------------------------------------- */
     /* -------------------- 2) PANE - Customer list ---------------------- */
@@ -633,10 +585,8 @@ public class HomeController implements Initializable {
         tbvCustomer.setItems(customers);
     }
 
+    /* ------------------------------------------------------------------- */
+    /* -------------------- 3) PANE - Rooms & Price ---------------------- */
+    /* ------------------------------------------------------------------- */
 
-//    private void closeWindow(ActionEvent event) {
-//        Node source = (Node) event.getSource();
-//        Stage stage = (Stage) source.getScene().getWindow();
-//        stage.close();
-//    }
 }

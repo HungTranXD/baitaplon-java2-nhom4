@@ -28,16 +28,16 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="28.0" prefWidth="380.0" spacing="5.0">
                <children>
-                  <DatePicker fx:id="dpBookingDateStart" disable="true" editable="false" prefHeight="25.0" prefWidth="127.0" />
-                  <TextField fx:id="txtBookingHourStart" alignment="CENTER" disable="true" editable="false" prefHeight="25.0" prefWidth="55.0" promptText="hh:mm" />
+                  <DatePicker fx:id="dpBookingDateStart" prefHeight="25.0" prefWidth="127.0" />
+                  <TextField fx:id="txtBookingHourStart" alignment="CENTER" prefHeight="25.0" prefWidth="55.0" promptText="hh:mm" />
                   <Label text="&gt;" />
-                  <DatePicker fx:id="dpBookingDateEnd" disable="true" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="123.0" />
-                  <TextField fx:id="txtBookingHourEnd" alignment="CENTER" disable="true" editable="false" layoutX="109.0" layoutY="10.0" prefHeight="25.0" prefWidth="54.0" promptText="hh:mm" />
+                  <DatePicker fx:id="dpBookingDateEnd" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="123.0" />
+                  <TextField fx:id="txtBookingHourEnd" alignment="CENTER" layoutX="109.0" layoutY="10.0" prefHeight="25.0" prefWidth="54.0" promptText="hh:mm" />
                </children>
             </HBox>
             <AnchorPane prefHeight="148.0" prefWidth="380.0" style="-fx-border-color: #dddddd; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <TableView fx:id="tbvRoomsBooked" prefHeight="124.0" prefWidth="391.0">
+                  <TableView fx:id="tbvRoomsBooked" prefHeight="97.0" prefWidth="391.0">
                     <columns>
                       <TableColumn fx:id="roomBookedNumberCol" prefWidth="75.0" text="Phòng" />
                         <TableColumn fx:id="roomBookedTypeCol" prefWidth="75.0" text="Loại phòng" />

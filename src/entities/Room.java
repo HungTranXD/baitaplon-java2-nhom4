@@ -39,8 +39,6 @@ public class Room {
 
     private Button removeBtn;
 
-//    //Add flag for selecting room
-//    private Boolean selectFlag;
 
 
     /* -------------------------------------------------------------- */
@@ -255,13 +253,6 @@ public class Room {
         this.removeBtn = removeBtn;
     }
 
-//    public Boolean getSelectFlag() {
-//        return selectFlag;
-//    }
-//
-//    public void setSelectFlag(Boolean selectFlag) {
-//        this.selectFlag = selectFlag;
-//    }
 
     /* -------------------------------------------------------------- */
     /* ----------------------- OTHER METHODS ------------------------ */

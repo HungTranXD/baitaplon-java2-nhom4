@@ -5,5 +5,6 @@ public enum RepoType {
     CUSTOMER,
     CHECKINOUT,
     CHECKINOUTSERVICE,
-    SERVICE
+    SERVICE,
+    ROOMTYPE
 }

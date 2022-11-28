@@ -29,6 +29,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -63,10 +64,12 @@ public class CheckinController implements Initializable {
     private TableColumn<Room, Double> roomBookedMoneyCol;
 
     //Variable for date time
-    static public LocalDate checkinDate;
-    static public LocalTime checkinTime;
-    static public LocalDate checkoutDate;
-    static public LocalTime checkoutTime;
+    private LocalDate checkinDate;
+    private LocalTime checkinTime;
+    private LocalDateTime checkinDatetime;
+    private LocalDate checkoutDate;
+    private LocalTime checkoutTime;
+    private LocalDateTime checkoutDatetime;
 
     static public ObservableList<Room> roomsSelected = FXCollections.observableArrayList();
 
@@ -93,32 +96,38 @@ public class CheckinController implements Initializable {
 
     public Stage window = new Stage();
 
-    @FXML
-    private Button btCloseWindow;
-
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Set init value for date time input:
+        dpBookingDateStart.setValue(LocalDate.now());
+        txtBookingHourStart.setText("14:00");
+        dpBookingDateEnd.setValue(LocalDate.now().plusDays(1));
+        txtBookingHourEnd.setText("12:00");
 
-        dpBookingDateStart.setValue(checkinDate);
-        txtBookingHourStart.setText(checkinTime.toString());
-        dpBookingDateEnd.setValue(checkoutDate);
-        txtBookingHourEnd.setText(checkoutTime.toString());
+        //Encapsulate process to calculate payment into a separated method (to reuse)
+        calculateRoomPayment();
 
+        //Add listener for date time input
+        dpBookingDateStart.valueProperty().addListener(observable -> calculateRoomPayment());
+        txtBookingHourStart.textProperty().addListener(observable -> calculateRoomPayment());
+        dpBookingDateEnd.valueProperty().addListener(observable -> calculateRoomPayment());
+        txtBookingHourEnd.textProperty().addListener(observable -> calculateRoomPayment());
 
         //Initialize room table
         roomBookedNumberCol.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         roomBookedTypeCol.setCellValueFactory(new PropertyValueFactory<>("typeName"));
         roomBookedMoneyCol.setCellValueFactory(new PropertyValueFactory<>("subPayment"));
+        roomBookedMoneyCol.setCellFactory(tc -> new TableCell<Room, Double>() {
+            @Override
+            protected void updateItem(Double payment, boolean empty) {
+                super.updateItem(payment, empty);
+                if (empty) setText(null);
+                else setText(String.format("%,.0f", payment));
+            }
+        });
         tbvRoomsBooked.setItems(roomsSelected);
-
-        //Calculate total roomPayment from roomsSelected
-        roomPayment = 0.0;
-        for(Room r: roomsSelected) {
-            roomPayment += r.getSubPayment();
-        }
-        lbRoomPayment.setText(roomPayment.toString());
     }
 
 
@@ -136,9 +145,48 @@ public class CheckinController implements Initializable {
     }
 
     //Other methods
+
+    void calculateRoomPayment() {
+        //Calculate subPayment for each room selected
+        checkinDate = dpBookingDateStart.getValue();
+        checkinTime = LocalTime.parse(txtBookingHourStart.getText());
+        checkinDatetime = LocalDateTime.of(checkinDate, checkinTime);
+
+        checkoutDate = dpBookingDateEnd.getValue();
+        checkoutTime = LocalTime.parse(txtBookingHourEnd.getText());
+        checkoutDatetime = LocalDateTime.of(checkoutDate, checkoutTime);
+        try {
+            if (checkoutDatetime.isBefore(checkinDatetime)) throw new Exception("Thời gian nhận phòng phải trước thời gian trả phòng");
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText(e.getMessage());
+            alert.show();
+            dpBookingDateStart.setValue(LocalDate.now());
+            txtBookingHourStart.setText("14:00");
+            dpBookingDateEnd.setValue(LocalDate.now().plusDays(1));
+            txtBookingHourEnd.setText("12:00");
+        }
+        for(Room r: roomsSelected) {
+            r.calculateSubPayment(checkinDatetime, checkoutDatetime);
+        }
+
+        //Calculate total roomPayment from roomsSelected
+        roomPayment = 0.0;
+        for(Room r: roomsSelected) {
+            roomPayment += r.getSubPayment();
+        }
+        lbRoomPayment.setText(String.format("%,.0f", roomPayment));
+        tbvRoomsBooked.refresh();
+    }
     @FXML
     void createCheckin(ActionEvent event) {
         try {
+            //Check if time input is correctly formatted (if parse fail it will automatically throw parse Exception)
+            LocalTime.parse(txtBookingHourStart.getText());
+            LocalTime.parse(txtBookingHourEnd.getText());
+
+
             LocalDateTime checkinDatetime = LocalDateTime.of(checkinDate, checkinTime);
             LocalDateTime checkoutDatetime = LocalDateTime.of(checkoutDate, checkoutTime);
 
@@ -200,17 +248,22 @@ public class CheckinController implements Initializable {
 
             //Call method in repository to add new checkinOut to database
             CheckinOutRepository ckr = (CheckinOutRepository) Factory.createRepository(RepoType.CHECKINOUT);
-            if(ckr.create(ck)) {
+            if (ckr.create(ck)) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Notification");
                 alert.setHeaderText("Đặt phòng thành công");
 
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK){
+                if (result.get() == ButtonType.OK) {
                     closeWindow(event);
-                };
+                }
             }
 
+        } catch (DateTimeParseException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText("Định dạng thời gian không đúng");
+            alert.show();
         } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);

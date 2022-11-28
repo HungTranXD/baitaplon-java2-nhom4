@@ -162,10 +162,22 @@ public class CheckoutController implements Initializable {
         dpBookingDateEnd.setValue(checkoutDate);
         txtBookingHourEnd.setText(timeFormatter.format(checkoutTime));
 
+        //--- set style for 2 buttons to choose time checkout
+        btTime1.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
+        btTime2.setStyle("-fx-background-color: transparent;");
+
         //Initialize rooms table
         roomBookedNumberCol.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         roomBookedTypeCol.setCellValueFactory(new PropertyValueFactory<>("typeName"));
         roomBookedMoneyCol.setCellValueFactory(new PropertyValueFactory<>("subPayment"));
+        roomBookedMoneyCol.setCellFactory(tc -> new TableCell<Room, Double>() {
+            @Override
+            protected void updateItem(Double payment, boolean empty) {
+                super.updateItem(payment, empty);
+                if (empty) setText(null);
+                else setText(String.format("%,.0f", payment));
+            }
+        });
         //--- calculate subPayment for each room in checkinOut object checkinOutRooms array:
         for(Room r: ck.getCheckinOutRooms()) {
             r.calculateSubPayment(LocalDateTime.of(checkinDate, checkinTime), LocalDateTime.of(checkoutDate, checkoutTime));
@@ -177,7 +189,7 @@ public class CheckoutController implements Initializable {
         for(Room r: ck.getCheckinOutRooms()) {
             roomPayment += r.getSubPayment();
         }
-        lbRoomPayment.setText(roomPayment.toString());
+        lbRoomPayment.setText(String.format("%,.0f", roomPayment));
 
         //Display customer info
         txtCustomerName.setText(ck.getCustomer().getCustomerName());
@@ -189,15 +201,23 @@ public class CheckoutController implements Initializable {
         tbvColServiceUnit.setCellValueFactory(new PropertyValueFactory<>("serviceUnit"));
         tbvColServiceQty.setCellValueFactory(new PropertyValueFactory<>("txtQuantity"));
         tbvColServiceSubtotal.setCellValueFactory(new PropertyValueFactory<>("subPayment"));
+        tbvColServiceSubtotal.setCellFactory(tc -> new TableCell<Service, Double>() {
+            @Override
+            protected void updateItem(Double payment, boolean empty) {
+                super.updateItem(payment, empty);
+                if (empty) setText(null);
+                else setText(String.format("%,.0f", payment));
+            }
+        });
         //-- Get all service from database and set them to tbvService
         ServiceRepository sr = (ServiceRepository) Factory.createRepository(RepoType.SERVICE);
         allServices = FXCollections.observableArrayList(sr.readAll());
         tbvService.setItems(allServices);
         //-- Add listener for each textField txtQuantity to calculate subPayment
         servicePayment = 0.0;
-        lbServicePayment.setText(servicePayment.toString());
+        lbServicePayment.setText(String.format("%,.0f", servicePayment));
         totalPayment = roomPayment + servicePayment;
-        lbTotalPayment.setText(totalPayment.toString());
+        lbTotalPayment.setText(String.format("%,.0f", totalPayment));
         for (Service s: allServices) {
             s.getTxtQuantity().textProperty().addListener((observable, oldValue, newValue) -> {
                 try {
@@ -209,26 +229,26 @@ public class CheckoutController implements Initializable {
 
                         servicePayment += ((newValueInt - oldValueInt) * s.getServiceFee());
                         tbvService.refresh();
-                        lbServicePayment.setText(servicePayment.toString());
+                        lbServicePayment.setText(String.format("%,.0f", servicePayment));
 
                         totalPayment = roomPayment + servicePayment;
-                        lbTotalPayment.setText(totalPayment.toString());
+                        lbTotalPayment.setText(String.format("%,.0f", totalPayment));
                     } else if (newValue.isEmpty()){ //oldValue not empty, newValue empty
                         s.setSubPayment(0.0);
                         servicePayment -= Integer.parseInt(oldValue) * s.getServiceFee();
                         tbvService.refresh();
-                        lbServicePayment.setText(servicePayment.toString());
+                        lbServicePayment.setText(String.format("%,.0f", servicePayment));
 
                         totalPayment = roomPayment + servicePayment;
-                        lbTotalPayment.setText(totalPayment.toString());
+                        lbTotalPayment.setText(String.format("%,.0f", totalPayment));
                     } else { //oldValue empty, newValue not empty
                         s.calculateSubPayment();
                         servicePayment += s.getSubPayment();
                         tbvService.refresh();
-                        lbServicePayment.setText(servicePayment.toString());
+                        lbServicePayment.setText(String.format("%,.0f", servicePayment));
 
                         totalPayment = roomPayment + servicePayment;
-                        lbTotalPayment.setText(totalPayment.toString());
+                        lbTotalPayment.setText(String.format("%,.0f", totalPayment));
                     }
                 } catch (Exception e) {
                     s.getTxtQuantity().setText("0");
@@ -329,22 +349,38 @@ public class CheckoutController implements Initializable {
 
     @FXML
     void changeCheckoutDatetime(ActionEvent event) {
-        //--- 2 buttons to choose time checkout
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        if (event.getSource() == btTime1) {
+            btTime1.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
+            btTime2.setStyle("-fx-background-color: transparent;");
+            dpBookingDateEnd.setValue(LocalDate.now());
+            txtBookingHourEnd.setText(timeFormatter.format(LocalTime.now()));
+        } else if (event.getSource() == btTime2) {
+            btTime2.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
+            btTime1.setStyle("-fx-background-color: transparent;");
+            dpBookingDateEnd.setValue(ck.getCheckoutDatetime().toLocalDate());
+            txtBookingHourEnd.setText(timeFormatter.format(ck.getCheckoutDatetime().toLocalTime()));
+        }
+        checkinDate = dpBookingDateStart.getValue();
+        checkinTime = LocalTime.parse(txtBookingHourStart.getText());
+        checkoutDate = dpBookingDateEnd.getValue();
+        checkoutTime = LocalTime.parse(txtBookingHourEnd.getText());
+        //Recalculate subPayment for each room in checkinOut object checkinOutRooms array:
+        for(Room r: ck.getCheckinOutRooms()) {
+            r.calculateSubPayment(LocalDateTime.of(checkinDate, checkinTime), LocalDateTime.of(checkoutDate, checkoutTime));
+        }
+        tbvRoomsBooked.refresh();
 
-//        btTime1.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
-//        btTime2.setStyle("-fx-background-color: transparent;");
-//        btTime1.setOnAction(event -> {
-//            btTime1.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
-//            btTime2.setStyle("-fx-background-color: transparent;");
-//            checkoutDate = LocalDate.now();
-//            checkoutTime = LocalTime.now();
-//        });
-//        btTime2.setOnAction(event -> {
-//            btTime2.setStyle("-fx-background-color: #1e88e5;-fx-background-radius:10px;-fx-text-fill: #FFFFFF;");
-//            btTime1.setStyle("-fx-background-color: transparent;");
-//            checkoutDate = ck.getCheckoutDatetime().toLocalDate();
-//            checkoutTime = ck.getCheckoutDatetime().toLocalTime();
-//        });
+        //Recalculate roomPayment from rooms in table
+        roomPayment = 0.0;
+        for(Room r: ck.getCheckinOutRooms()) {
+            roomPayment += r.getSubPayment();
+        }
+        lbRoomPayment.setText(String.format("%,.0f",roomPayment));
+
+        //Recalculate total payment
+        totalPayment = roomPayment + servicePayment;
+        lbTotalPayment.setText(String.format("%,.0f",totalPayment));
     }
 
     private void closeWindow(ActionEvent event) {
