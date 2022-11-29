@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.home.HomeController;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -20,6 +21,7 @@ public class Main extends Application {
         rootStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("home/home.fxml"));
         Scene sc = new Scene(root);
+        primaryStage.getIcons().add(new Image("icon/hotel_logo.png"));
         primaryStage.setScene(sc);
         primaryStage.show();
     }

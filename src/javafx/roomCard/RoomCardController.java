@@ -1,6 +1,7 @@
 package javafx.roomCard;
 
 import entities.Room;
+import enums.RoomStatus;
 import interfaces.MyListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -51,31 +52,31 @@ public class RoomCardController {
         this.room = r;
         this.myListener = myListener;
 
-        if (r.getRoomStatus().equals("Trống")) {
+        if (r.getRoomStatus() == RoomStatus.EMPTY) {
             vbRoomInfo.setStyle("-fx-background-color: #43a047; -fx-background-radius: 10px 0 0 10px");
             vbRoomDetail.setStyle("-fx-background-color: #ebfceb; -fx-background-radius: 0 10px 10px 0");
             lbCustomerName.setStyle("-fx-text-fill: #43a047; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
             Image icon = new Image(getClass().getResourceAsStream("/icon/empty.png"));
             imgIconStatus.setImage(icon);
-        } else if (r.getRoomStatus().equals("Đã đặt")) {
-            vbRoomInfo.setStyle("-fx-background-color: #1e88e5; -fx-background-radius: 10px 0 0 10px");
-            vbRoomDetail.setStyle("-fx-background-color: #e0ecfd; -fx-background-radius: 0 10px 10px 0");
-            lbCustomerName.setStyle("-fx-text-fill: #1e88e5; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
-            Image icon = new Image(getClass().getResourceAsStream("/icon/booked.png"));
-            imgIconStatus.setImage(icon);
-        } else if (r.getRoomStatus().equals("Chưa đến")) {
-            vbRoomInfo.setStyle("-fx-background-color: #9c27b0; -fx-background-radius: 10px 0 0 10px");
-            vbRoomDetail.setStyle("-fx-background-color: #f7e5fd;-fx-background-radius: 0 10px 10px 0");
-            lbCustomerName.setStyle("-fx-text-fill: #9c27b0; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
-            Image icon = new Image(getClass().getResourceAsStream("/icon/booked.png"));
-            imgIconStatus.setImage(icon);
-        } else if (r.getRoomStatus().equals("Có khách")) {
+//        } else if (r.getRoomStatus().equals("Đã đặt")) {
+//            vbRoomInfo.setStyle("-fx-background-color: #1e88e5; -fx-background-radius: 10px 0 0 10px");
+//            vbRoomDetail.setStyle("-fx-background-color: #e0ecfd; -fx-background-radius: 0 10px 10px 0");
+//            lbCustomerName.setStyle("-fx-text-fill: #1e88e5; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
+//            Image icon = new Image(getClass().getResourceAsStream("/icon/booked.png"));
+//            imgIconStatus.setImage(icon);
+//        } else if (r.getRoomStatus().equals("Chưa đến")) {
+//            vbRoomInfo.setStyle("-fx-background-color: #9c27b0; -fx-background-radius: 10px 0 0 10px");
+//            vbRoomDetail.setStyle("-fx-background-color: #f7e5fd;-fx-background-radius: 0 10px 10px 0");
+//            lbCustomerName.setStyle("-fx-text-fill: #9c27b0; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
+//            Image icon = new Image(getClass().getResourceAsStream("/icon/booked.png"));
+//            imgIconStatus.setImage(icon);
+        } else if (r.getRoomStatus() == RoomStatus.OCCUPIED) {
             vbRoomInfo.setStyle("-fx-background-color: #d9390d; -fx-background-radius: 10px 0 0 10px");
             vbRoomDetail.setStyle("-fx-background-color: #ffebe6; -fx-background-radius: 0 10px 10px 0");
             lbCustomerName.setStyle("-fx-text-fill: #d9390d; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
             Image icon = new Image(getClass().getResourceAsStream("/icon/occupied.png"));
             imgIconStatus.setImage(icon);
-        } else if (r.getRoomStatus().equals("Chưa đi")) {
+        } else if (r.getRoomStatus() == RoomStatus.OVERDUE) {
             vbRoomInfo.setStyle("-fx-background-color: #fc9540; -fx-background-radius: 10px 0 0 10px");
             vbRoomDetail.setStyle("-fx-background-color: #ffeee3; -fx-background-radius: 0 10px 10px 0");
             lbCustomerName.setStyle("-fx-text-fill: #fc9540; -fx-border-color: #bcbcbc; -fx-border-width: 0 0 1px 0;");
@@ -91,9 +92,9 @@ public class RoomCardController {
         lbRoomType.setText(r.getTypeName());
         lbRoomNumber.setText(r.getRoomNumber());
 
-        if (r.getRoomStatus().equals("Trống")) {
+        if (r.getRoomStatus() == RoomStatus.EMPTY) {
             vbRoomDetail.getChildren().removeAll(lbCustomerName, lbCheckin, lbCheckout);
-            lbRoomStatus.setText(r.getRoomStatus());
+            lbRoomStatus.setText("Trống");
         } else {
             vbRoomDetail.getChildren().remove(lbRoomStatus);
             lbCustomerName.setText(r.getCustomerName());

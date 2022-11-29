@@ -2,6 +2,7 @@ package javafx.home;
 
 import entities.*;
 import enums.RepoType;
+import enums.RoomStatus;
 import factory.Factory;
 import impls.CustomerRepository;
 import impls.RoomRepository;
@@ -105,7 +106,7 @@ public class HomeController implements Initializable {
     //Variable for type:
     private String roomType;
     //Variable for status:
-    private String roomStatus;
+    private RoomStatus roomStatus;
 
     // -- End of Filter buttons --
 
@@ -209,7 +210,7 @@ public class HomeController implements Initializable {
         /* ------------------------------------------------------------------- */
         //First, set roomType and roomStatus = all
         roomType = "Tất cả";
-        roomStatus = "Tất cả";
+        roomStatus = RoomStatus.ALL;
         btAllType.getStyleClass().add("button2-focused");
         btAllStatus.getStyleClass().add("button-blue-focused");
 
@@ -229,7 +230,7 @@ public class HomeController implements Initializable {
                 }
             });
         };
-        ScheduledFuture<?> scheduledFuture = ses.scheduleAtFixedRate(task,0,10000, TimeUnit.SECONDS);
+        ScheduledFuture<?> scheduledFuture = ses.scheduleAtFixedRate(task,0,1, TimeUnit.MINUTES);
 
 
         /* ------------------------------------------------------------------- */
@@ -377,28 +378,28 @@ public class HomeController implements Initializable {
     @FXML
     void filterByStatus(ActionEvent event) {
         if (event.getSource() == btAllStatus) {
-            roomStatus = "Tất cả";
+            roomStatus = RoomStatus.ALL;
             btAllStatus.getStyleClass().add("button-blue-focused");
             //Remove focused from other buttons
             btStatusEmpty.getStyleClass().remove("button-green-focused");
             btStatusOccupied.getStyleClass().remove("button-red-focused");
             btStatusOverdue.getStyleClass().remove("button-orange-focused");
         } else if (event.getSource() == btStatusEmpty) {
-            roomStatus = "Trống";
+            roomStatus = RoomStatus.EMPTY;
             btStatusEmpty.getStyleClass().add("button-green-focused");
             //Remove focused from other buttons
             btAllStatus.getStyleClass().remove("button-blue-focused");
             btStatusOccupied.getStyleClass().remove("button-red-focused");
             btStatusOverdue.getStyleClass().remove("button-orange-focused");
         } else if (event.getSource() == btStatusOccupied) {
-            roomStatus = "Có khách";
+            roomStatus = RoomStatus.OCCUPIED;
             btStatusOccupied.getStyleClass().add("button-red-focused");
             //Remove focused from other buttons
             btAllStatus.getStyleClass().remove("button-blue-focused");
             btStatusEmpty.getStyleClass().remove("button-green-focused");
             btStatusOverdue.getStyleClass().remove("button-orange-focused");
         } else if (event.getSource() == btStatusOverdue) {
-            roomStatus = "Chưa đi";
+            roomStatus = RoomStatus.OVERDUE;
             btStatusOverdue.getStyleClass().add("button-orange-focused");
             //Remove focused from other buttons
             btAllStatus.getStyleClass().remove("button-blue-focused");
@@ -410,7 +411,7 @@ public class HomeController implements Initializable {
     // -- End of Filter rooms --
 
 
-    public void initRoomsPlan(String roomType, String roomStatus) {
+    public void initRoomsPlan(String roomType, RoomStatus roomStatus) {
         roomsPlanToday.clear();
         gridRoomsFloor1.getChildren().clear();
         gridRoomsFloor2.getChildren().clear();
@@ -433,9 +434,9 @@ public class HomeController implements Initializable {
         Integer overdueQuantity = 0;
         for (Room r: roomsPlanToday) {
             r.checkRoomStatus();
-            if (r.getRoomStatus().equals("Trống")) emptyQuantity ++;
-            else if (r.getRoomStatus().equals("Có khách")) occupiedQuantity++;
-            else if (r.getRoomStatus().equals("Chưa đi")) overdueQuantity++;
+            if (r.getRoomStatus() == RoomStatus.EMPTY) emptyQuantity ++;
+            else if (r.getRoomStatus() == RoomStatus.OCCUPIED) occupiedQuantity++;
+            else if (r.getRoomStatus() == RoomStatus.OVERDUE) overdueQuantity++;
             totalQuantity++;
         }
         //Display number of room for each status
@@ -444,14 +445,14 @@ public class HomeController implements Initializable {
         btStatusOccupied.setText("Có khách (" + occupiedQuantity + ")");
         btStatusOverdue.setText("Chưa đi (" + overdueQuantity + ")");
 
-        if (!roomStatus.equals("Tất cả")) {
-            roomsPlanToday.removeIf(r -> !r.getRoomStatus().equals(roomStatus));
+        if (roomStatus != RoomStatus.ALL) {
+            roomsPlanToday.removeIf(r -> r.getRoomStatus() != roomStatus);
         }
         myListener = new MyListener() {
             @Override
             public void onClickListener(Room r) {
                 //1) IF the room is EMPTY we add this listener:
-                if(r.getRoomStatus().equals("Trống")) {
+                if(r.getRoomStatus() == RoomStatus.EMPTY) {
                     //Ask if user want to go to checkin window
                     Alert confirmation1 = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmation1.setTitle("Confirmation");
@@ -479,7 +480,7 @@ public class HomeController implements Initializable {
                     }
 
                 //2) IF the room is OCCUPIED we add this listener:
-                } else if (r.getRoomStatus().equals("Có khách") || r.getRoomStatus().equals("Chưa đi")) {
+                } else if (r.getRoomStatus() == RoomStatus.OCCUPIED || r.getRoomStatus() == RoomStatus.OVERDUE) {
                     //Ask if user want to go to checkout window
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmation.setTitle("Confirmation");
@@ -585,8 +586,5 @@ public class HomeController implements Initializable {
         tbvCustomer.setItems(customers);
     }
 
-    /* ------------------------------------------------------------------- */
-    /* -------------------- 3) PANE - Rooms & Price ---------------------- */
-    /* ------------------------------------------------------------------- */
 
 }

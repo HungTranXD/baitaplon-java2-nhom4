@@ -240,9 +240,9 @@
                         <DatePicker fx:id="dpCusCheckoutDate" layoutX="758.0" layoutY="40.0" />
                         <TableView fx:id="tbvCustomer" layoutX="14.0" layoutY="78.0" prefHeight="358.0" prefWidth="993.0" AnchorPane.bottomAnchor="443.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="78.0">
                           <columns>
-                            <TableColumn fx:id="tbvColCusName" prefWidth="75.0" text="Tên khách" />
-                              <TableColumn fx:id="tbvColCusTel" prefWidth="75.0" text="Số điện thoại" />
-                              <TableColumn fx:id="tbvColCusIdNumber" prefWidth="75.0" text="Số CMND/Hộ chiếu" />
+                            <TableColumn fx:id="tbvColCusName" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Tên khách" />
+                              <TableColumn fx:id="tbvColCusTel" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Số điện thoại" />
+                              <TableColumn fx:id="tbvColCusIdNumber" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Số CMND/Hộ chiếu" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

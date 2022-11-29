@@ -262,7 +262,7 @@ public class CheckoutController implements Initializable {
             });
         }
 
-        //Add payment methods combobox
+
         cbPaymentMethod.getItems().addAll("Tiền mặt", "Thẻ tín dụng", "Chuyển khoản ngân hàng", "Ví điện tử");
 
     }

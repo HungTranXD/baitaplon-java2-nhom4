@@ -1,6 +1,7 @@
 package entities;
 
 
+import enums.RoomStatus;
 import javafx.checkin.CheckinController;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -30,7 +31,7 @@ public class Room {
     
     private Double subPayment;// This field is for calculating payment based on checkin/out time
 
-    private String roomStatus;
+    private RoomStatus roomStatus;
     private Integer checkinOutId;
     private LocalDateTime checkinDatetime;
     private LocalDateTime checkoutDatetime;
@@ -197,11 +198,11 @@ public class Room {
         this.subPayment = subPayment;
     }
 
-    public String getRoomStatus() {
+    public RoomStatus getRoomStatus() {
         return roomStatus;
     }
 
-    public void setRoomStatus(String roomStatus) {
+    public void setRoomStatus(RoomStatus roomStatus) {
         this.roomStatus = roomStatus;
     }
 
@@ -278,7 +279,6 @@ public class Room {
             LocalDate ckoutDate = checkout.toLocalDate();
             LocalTime ckoutTime = checkout.toLocalTime();
 
-            LocalTime _0h = LocalTime.of(0,0);
             LocalTime _5h = LocalTime.of(5,0);
             LocalTime _12h = LocalTime.of(12,0,1);
             LocalTime _14h = LocalTime.of(14,0);
@@ -371,13 +371,13 @@ public class Room {
 
     public void checkRoomStatus(){
         if (getCheckinOutId().equals(0)) {
-            this.roomStatus = "Trống";
+            this.roomStatus = RoomStatus.EMPTY;
         } else if ( checkoutDatetime.isAfter(LocalDateTime.now()) || checkoutDatetime.equals(LocalDateTime.now()) ) {
-            this.roomStatus = "Có khách";
+            this.roomStatus = RoomStatus.OCCUPIED;
         } else if ( checkoutDatetime.isBefore(LocalDateTime.now()) ) {
-            this.roomStatus = "Chưa đi";
+            this.roomStatus = RoomStatus.OVERDUE;
         } else {
-            this.roomStatus = "Chưa xác định";
+            this.roomStatus = RoomStatus.UNIDENTIFIED;
         }
     }
 
