@@ -1,14 +1,14 @@
 package entities;
 
+import javafx.editCustomer.EditCustomer;
 import javafx.scene.control.Button;
-
-import java.time.LocalDate;
 
 public class Customer {
     private Integer customerId;
     private String customerName;
     private String customerIdNumber;
     private String customerTel;
+    private Button btEdit;
 
     /* -------------------------------------------------------------- */
     /* ------------------------ CONSTRUCTORS ------------------------ */
@@ -21,6 +21,17 @@ public class Customer {
         this.customerName = customerName;
         this.customerIdNumber = customerIdNumber;
         this.customerTel = customerTel;
+        this.btEdit = new Button("Edit");
+        btEdit.getStyleClass().add("button3");
+        btEdit.setOnAction(event -> {
+            EditCustomer.editingCustomer = this;
+            EditCustomer editCustomer = new EditCustomer();
+            try {
+                editCustomer.display();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /* -------------------------------------------------------------- */
@@ -58,6 +69,13 @@ public class Customer {
         this.customerTel = customerTel;
     }
 
+    public Button getBtEdit() {
+        return btEdit;
+    }
+
+    public void setBtEdit(Button btEdit) {
+        this.btEdit = btEdit;
+    }
 
     @Override
     public String toString() {

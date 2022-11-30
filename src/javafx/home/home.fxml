@@ -224,32 +224,6 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="pnCustomerList" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
-                     <children>
-                        <Label layoutX="14.0" layoutY="8.0" text="Danh sách khách">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtCusName" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="182.0" promptText="Tên khách" />
-                        <TextField fx:id="txtCusTel" layoutX="201.0" layoutY="40.0" prefHeight="25.0" prefWidth="167.0" promptText="SĐT" />
-                        <TextField fx:id="txtCusIdNumber" layoutX="374.0" layoutY="40.0" prefHeight="25.0" prefWidth="179.0" promptText="CMND/Hộ chiếu" />
-                        <Button layoutX="939.0" layoutY="39.0" mnemonicParsing="false" onAction="#findCustomers" styleClass="button6" stylesheets="@home.css" text="Tìm kiếm" AnchorPane.rightAnchor="14.0" />
-                        <DatePicker fx:id="dpCusCheckinDate" layoutX="561.0" layoutY="40.0" />
-                        <Label layoutX="742.0" layoutY="44.0" text="&gt;" />
-                        <DatePicker fx:id="dpCusCheckoutDate" layoutX="758.0" layoutY="40.0" />
-                        <TableView fx:id="tbvCustomer" layoutX="14.0" layoutY="78.0" prefHeight="358.0" prefWidth="993.0" AnchorPane.bottomAnchor="443.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="78.0">
-                          <columns>
-                            <TableColumn fx:id="tbvColCusName" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Tên khách" />
-                              <TableColumn fx:id="tbvColCusTel" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Số điện thoại" />
-                              <TableColumn fx:id="tbvColCusIdNumber" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Số CMND/Hộ chiếu" />
-                          </columns>
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
                   <AnchorPane fx:id="pnRoomPrice" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
                      <children>
                         <TabPane prefHeight="200.0" prefWidth="200.0" stylesheets="@home.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -396,6 +370,33 @@
                             </Tab>
                           </tabs>
                         </TabPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="pnCustomerList" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="8.0" text="Danh sách khách">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtCusName" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="182.0" promptText="Tên khách" />
+                        <TextField fx:id="txtCusTel" layoutX="201.0" layoutY="40.0" prefHeight="25.0" prefWidth="167.0" promptText="SĐT" />
+                        <TextField fx:id="txtCusIdNumber" layoutX="374.0" layoutY="40.0" prefHeight="25.0" prefWidth="179.0" promptText="CMND/Hộ chiếu" />
+                        <Button layoutX="939.0" layoutY="39.0" mnemonicParsing="false" onAction="#findCustomers" styleClass="button6" stylesheets="@home.css" text="Tìm kiếm" AnchorPane.rightAnchor="14.0" />
+                        <DatePicker fx:id="dpCusCheckinDate" layoutX="561.0" layoutY="40.0" />
+                        <Label layoutX="742.0" layoutY="44.0" text="&gt;" />
+                        <DatePicker fx:id="dpCusCheckoutDate" layoutX="758.0" layoutY="40.0" />
+                        <TableView fx:id="tbvCustomer" layoutX="14.0" layoutY="78.0" prefHeight="338.0" prefWidth="993.0" stylesheets="@home.css" AnchorPane.bottomAnchor="362.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="78.0">
+                          <columns>
+                            <TableColumn fx:id="tbvColCusName" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Tên khách" />
+                              <TableColumn fx:id="tbvColCusTel" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Số điện thoại" />
+                              <TableColumn fx:id="tbvColCusIdNumber" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Số CMND/Hộ chiếu" />
+                              <TableColumn fx:id="tbvColCusEdit" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Chỉnh sửa" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="pnRoomPlan" prefHeight="747.0" prefWidth="1021.0" style="-fx-background-color: #f0f0f0;">

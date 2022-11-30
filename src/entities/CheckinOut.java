@@ -16,7 +16,7 @@ public class CheckinOut {
     private String paymentMethod;
 
     private Customer customer;
-    private ArrayList<Room> checkinOutRooms =new ArrayList<>();
+    private ArrayList<Room> checkinOutRooms = new ArrayList<>();
     private ArrayList<CheckinOutService> checkinOutServices = new ArrayList<>();
 
     /* -------------------------------------------------------------- */

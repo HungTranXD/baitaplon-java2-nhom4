@@ -11,7 +11,9 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Room {
@@ -30,6 +32,7 @@ public class Room {
     private Double lateCheckoutFee2;
     
     private Double subPayment;// This field is for calculating payment based on checkin/out time
+    private ArrayList<DetailRoomPayment> detailSubPayment;
 
     private RoomStatus roomStatus;
     private Integer checkinOutId;
@@ -64,6 +67,7 @@ public class Room {
         this.lateCheckoutFee2 = lateCheckoutFee2;
 
         this.subPayment = 0.0;
+        this.detailSubPayment = new ArrayList<>();
         this.roomStatus = null;
 
         this.checkinOutId = checkinOutId;
@@ -80,7 +84,7 @@ public class Room {
         ImageView view = new ImageView(cancelIcon);
         removeBtn.setGraphic(view);
         removeBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-cursor: hand");
-//        this.selectFlag = false;
+
     }
 
     /* -------------------------------------------------------------- */
@@ -198,6 +202,14 @@ public class Room {
         this.subPayment = subPayment;
     }
 
+    public ArrayList<DetailRoomPayment> getDetailSubPayment() {
+        return detailSubPayment;
+    }
+
+    public void setDetailSubPayment(ArrayList<DetailRoomPayment> detailSubPayment) {
+        this.detailSubPayment = detailSubPayment;
+    }
+
     public RoomStatus getRoomStatus() {
         return roomStatus;
     }
@@ -260,14 +272,30 @@ public class Room {
     /* -------------------------------------------------------------- */
     public void calculateSubPayment(LocalDateTime checkin, LocalDateTime checkout) {
         long minutesBetween = ChronoUnit.MINUTES.between(checkin, checkout);
-        System.out.println(minutesBetween);
+//        System.out.println(minutesBetween);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM HH:mm");
         if(minutesBetween <= 360) {
             System.out.println("Hour Price");
             //Calculate according to hour price
             if(minutesBetween < 60) {
                 this.subPayment = this.getFirstHourPrice();
+                this.detailSubPayment.add(new DetailRoomPayment(
+                        "Giá giờ\nđầu tiên",
+                        dtf.format(checkin) + "\n" + dtf.format(checkout),
+                        this.getFirstHourPrice()
+                ));
             } else {
                 this.subPayment = this.getFirstHourPrice() + Math.ceil((minutesBetween - 60.0) / 60.0) * this.getNextHourPrice();
+                this.detailSubPayment.add(new DetailRoomPayment(
+                        "Giá giờ\nđầu tiên",
+                        dtf.format(checkin) + "\n" + dtf.format(checkin.plusHours(1)),
+                        this.getFirstHourPrice()
+                ));
+                this.detailSubPayment.add(new DetailRoomPayment(
+                        "Giá giờ\ntiếp theo",
+                        dtf.format(checkin) + "\n" + dtf.format(checkin.plusHours(1)) + "\n" + "(" +Math.ceil((minutesBetween - 60.0) / 60.0) + "h)",
+                        Math.ceil((minutesBetween - 60.0) / 60.0) * this.getNextHourPrice()
+                ));
             }
         } else {
             System.out.println("Day Price");
@@ -291,31 +319,86 @@ public class Room {
                     if ( ckoutTime.isBefore(_12h)) {
                         System.out.println("TH 1 1 1");
                         this.subPayment = this.getDayPrice();
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(checkout),
+                                this.getDayPrice()
+                        ));
                     } else if (ckoutTime.isBefore(_18h)) {
                         System.out.println("TH 1 1 2");
                         long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
                         this.subPayment = this.getDayPrice() + (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2());
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate,_12h)),
+                                this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "P.checkout\nmuộn",
+                                dtf.format(LocalDateTime.of(ckinDate,_12h)) + "\n" + dtf.format(checkout) + "\n" + "(" + hoursLate + "h)",
+                                (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2())
+                        ));
                     } else {
                         System.out.println("TH 1 1 3");
                         this.subPayment = 2.0 * this.getDayPrice();
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate,_12h)),
+                                this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckinDate,_12h)) + "\n" + dtf.format(checkout),
+                                this.getDayPrice()
+                        ));
                     }
                 } else if (ckinTime.isBefore(_14h)) {
                     System.out.println("TH 1 2");
                     if ( ckoutTime.isBefore(_12h)) {
                         System.out.println("TH 1 2 1");
                         this.subPayment = this.getDayPrice();
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(checkout),
+                                this.getDayPrice()
+                        ));
                     } else if (ckoutTime.isBefore(_14h)) {
                         System.out.println("TH 1 2 2");
                         long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
                         this.subPayment = this.getDayPrice() + (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2());
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate,_12h)),
+                                this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "P.checkout\nmuộn",
+                                dtf.format(LocalDateTime.of(ckinDate,_12h)) + "\n" + dtf.format(checkout) + "\n" + "(" + hoursLate + "h)",
+                                (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2())
+                        ));
                     } else {
                         System.out.println("TH 1 2 3");
                         long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
                         this.subPayment = this.getDayPrice() + (hoursEarly < 5 ? this.getEarlyCheckinFee1() : this.getEarlyCheckinFee2());
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "P.checkin\nsớm",
+                                dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate,_14h)) + "\n" + "(" + hoursEarly + "h)",
+                                (hoursEarly < 5 ? this.getEarlyCheckinFee1() : this.getEarlyCheckinFee2())
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckinDate,_14h)) + "\n" + dtf.format(checkout),
+                                this.getDayPrice()
+                        ));
                     }
                 } else {
                     System.out.println("TH 1 3");
                     this.subPayment = this.getDayPrice();
+                    this.detailSubPayment.add(new DetailRoomPayment(
+                            "Giá ngày",
+                            dtf.format(checkin) + "\n" + dtf.format(checkout),
+                            this.getDayPrice()
+                    ));
                 }
             } else if (ckoutDate.isAfter(ckinDate)) {
                 System.out.println("TH 2");
@@ -325,39 +408,175 @@ public class Room {
                     if ( ckoutTime.isBefore(_12h)) {
                         System.out.println("TH 2 1 1");
                         this.subPayment = (dayBetween + 1) * this.getDayPrice();
+
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate, _12h)),
+                                this.getDayPrice()
+                        ));
+                        if (dayBetween > 1) {
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(LocalDateTime.of(ckinDate,_12h)) + "\n" + dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + "(" + (dayBetween-1) + " ngày)",
+                                    (dayBetween-1) * this.getDayPrice()
+                            ));
+                        }
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + dtf.format(checkout),
+                                this.getDayPrice()
+                        ));
+
                     } else if (ckoutTime.isBefore(_18h)) {
                         System.out.println("TH 2 1 2");
                         long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
                         this.subPayment = (dayBetween + 1) * this.getDayPrice() + (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2());
+
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate, _12h)),
+                                this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckinDate,_12h)) + "\n" + dtf.format(LocalDateTime.of(ckoutDate,_12h)) + "\n" + "(" + dayBetween + " ngày)",
+                                dayBetween * this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "P.checkout\nmuộn",
+                                dtf.format(LocalDateTime.of(ckoutDate,_12h)) + "\n" + dtf.format(checkout) + "\n" + "(" + hoursLate + "h)",
+                                (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2())
+                        ));
+
                     } else {
                         System.out.println("TH 2 1 3");
                         this.subPayment = (dayBetween + 2) * this.getDayPrice();
+
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate, _12h)),
+                                this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckinDate,_12h)) + "\n" + dtf.format(LocalDateTime.of(ckoutDate,_12h)) + "\n" + "(" + dayBetween + " ngày)",
+                                dayBetween * this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + dtf.format(checkout),
+                                this.getDayPrice()
+                        ));
                     }
                 } else if (ckinTime.isBefore(_14h)) {
                     System.out.println("TH 2 2");
+                    long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
+                    this.detailSubPayment.add(new DetailRoomPayment(
+                            "P.checkin\nsớm",
+                            dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate,_14h)) + "\n" + "(" + hoursEarly + "h)",
+                            hoursEarly < 5 ? this.getEarlyCheckinFee1() : this.getEarlyCheckinFee2()
+                    ));
                     if ( ckoutTime.isBefore(_12h)) {
                         System.out.println("TH 2 2 1");
-                        long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
                         this.subPayment = dayBetween * this.getDayPrice() + (hoursEarly < 5 ? this.getEarlyCheckinFee1() : this.getEarlyCheckinFee2());
+
+                        if (dayBetween == 1) {
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(LocalDateTime.of(ckinDate,_14h)) + "\n" + dtf.format(checkout),
+                                    this.getDayPrice()
+                            ));
+                        } else if (dayBetween > 1) {
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(LocalDateTime.of(ckinDate,_14h)) + "\n" + dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + "(" + (dayBetween-1) + " ngày)",
+                                    (dayBetween-1) * this.getDayPrice()
+                            ));
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + dtf.format(checkout),
+                                    this.getDayPrice()
+                            ));
+                        }
                     } else if (ckoutTime.isBefore(_18h)) {
                         System.out.println("TH 2 2 2");
-                        long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
                         long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
                         this.subPayment = dayBetween * this.getDayPrice() + (hoursEarly < 5 ? this.getEarlyCheckinFee1() : this.getEarlyCheckinFee2()) + (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2());
+
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckinDate,_14h)) + "\n" + dtf.format(LocalDateTime.of(ckoutDate,_12h)) + "\n" + "(" + dayBetween + " ngày)",
+                                dayBetween * this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "P.checkout\nmuộn",
+                                dtf.format(LocalDateTime.of(ckoutDate,_12h)) + "\n" + dtf.format(checkout) + "\n" + "(" + hoursLate + "h)",
+                                hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2()
+                        ));
                     } else {
                         System.out.println("TH 2 2 3");
-                        long hoursEarly = ChronoUnit.HOURS.between(ckinTime, _14h);
                         this.subPayment = (dayBetween + 1) * this.getDayPrice() + (hoursEarly < 5 ? this.getEarlyCheckinFee1() : this.getEarlyCheckinFee2());
+
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckinDate,_14h)) + "\n" + dtf.format(LocalDateTime.of(ckoutDate,_12h)) + "\n" + "(" + dayBetween + " ngày)",
+                                dayBetween * this.getDayPrice()
+                        ));
+                        this.detailSubPayment.add(new DetailRoomPayment(
+                                "Giá ngày",
+                                dtf.format(LocalDateTime.of(ckoutDate,_12h)) + "\n" + dtf.format(checkout),
+                                this.getDayPrice()
+                        ));
                     }
                 } else {
                     System.out.println("TH 2 3");
                     if (ckoutTime.isBefore(_12h)) {
                         System.out.println("TH 2 3 1");
                         this.subPayment = dayBetween * this.getDayPrice();
+
+                        if(dayBetween == 1) {
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(checkin) + "\n" + dtf.format(checkout),
+                                    this.getDayPrice()
+                            ));
+                        } else if (dayBetween == 2) {
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)),
+                                    this.getDayPrice()
+                            ));
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + dtf.format(checkout),
+                                    this.getDayPrice()
+                            ));
+                        } else if (dayBetween > 2) {
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(checkin) + "\n" + dtf.format(LocalDateTime.of(ckinDate.plusDays(1),_12h)),
+                                    this.getDayPrice()
+                            ));
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(LocalDateTime.of(ckinDate.plusDays(1),_12h)) + "\n" + dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + "(" + (dayBetween-2) + " ngày)",
+                                    (dayBetween-2) * this.getDayPrice()
+                            ));
+                            this.detailSubPayment.add(new DetailRoomPayment(
+                                    "Giá ngày",
+                                    dtf.format(LocalDateTime.of(ckoutDate.minusDays(1),_12h)) + "\n" + dtf.format(checkout),
+                                    this.getDayPrice()
+                            ));
+                        }
                     } else if (ckoutTime.isBefore(_18h)) {
                         System.out.println("TH 2 3 2");
                         long hoursLate = ChronoUnit.HOURS.between(_12h, ckoutTime);
                         this.subPayment = dayBetween * this.getDayPrice() + (hoursLate < 3 ? this.getLateCheckoutFee1() : this.getLateCheckoutFee2());
+
+                        ///////
+                        //////
+                        //////
+                        //////
                     } else {
                         System.out.println("TH 2 3 3");
                         this.subPayment = (dayBetween + 1) * this.getDayPrice();

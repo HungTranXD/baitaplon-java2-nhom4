@@ -14,6 +14,7 @@ import javafx.checkin.CheckinController;
 import javafx.checkout.CheckoutController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.editCustomer.EditCustomer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -145,6 +147,8 @@ public class HomeController implements Initializable {
     private TableColumn<Customer, String> tbvColCusTel;
     @FXML
     private TableColumn<Customer, String> tbvColCusIdNumber;
+    @FXML
+    private TableColumn<Customer, Button> tbvColCusEdit;
 
     //Variables for customer list pane
     private LocalDateTime checkin;
@@ -243,8 +247,11 @@ public class HomeController implements Initializable {
         tbvColCusName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         tbvColCusTel.setCellValueFactory(new PropertyValueFactory<>("customerTel"));
         tbvColCusIdNumber.setCellValueFactory(new PropertyValueFactory<>("customerIdNumber"));
+        tbvColCusEdit.setCellValueFactory(new PropertyValueFactory<>("btEdit"));
 
         findCustomers(null);
+
+
 
 
         /* ------------------------------------------------------------------- */
@@ -264,6 +271,7 @@ public class HomeController implements Initializable {
         tbvPrice_Late2Col.setCellValueFactory(new PropertyValueFactory<>("lateCheckoutFee2"));
 
         tbvPrice.setItems(roomTypesAndPrice);
+
     }
 
 
@@ -585,6 +593,5 @@ public class HomeController implements Initializable {
         ObservableList<Customer> customers = FXCollections.observableArrayList(cr.findCustomer(customerName, customerIdNumber, customerTel, checkinDatetime, checkoutDatetime));
         tbvCustomer.setItems(customers);
     }
-
 
 }
