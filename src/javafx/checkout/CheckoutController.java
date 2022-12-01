@@ -1,9 +1,6 @@
 package javafx.checkout;
 
-import entities.CheckinOut;
-import entities.CheckinOutService;
-import entities.Room;
-import entities.Service;
+import entities.*;
 import enums.RepoType;
 import factory.Factory;
 import impls.CheckinOutRepository;
@@ -41,33 +38,33 @@ public class CheckoutController implements Initializable {
     /* ----------------------------------------------------------- */
     @FXML
     private DatePicker dpBookingDateStart;
-
     @FXML
     private TextField txtBookingHourStart;
-
     @FXML
     private DatePicker dpBookingDateEnd;
-
     @FXML
     private TextField txtBookingHourEnd;
-
     @FXML
     private Button btTime1;
-
     @FXML
     private Button btTime2;
-
     @FXML
     private TableView<Room> tbvRoomsBooked;
-
     @FXML
     private TableColumn<Room, String> roomBookedNumberCol;
-
     @FXML
     private TableColumn<Room, String> roomBookedTypeCol;
-
     @FXML
     private TableColumn<Room, Double> roomBookedMoneyCol;
+
+    @FXML
+    private TableView<DetailRoomPayment> tbvDetailRoomPayment;
+    @FXML
+    private TableColumn<DetailRoomPayment, String> tbvDetail_colPriceType;
+    @FXML
+    private TableColumn<DetailRoomPayment, String> tbvDetail_colPeriod;
+    @FXML
+    private TableColumn<DetailRoomPayment, Double> tbvDetail_colToMoney;
 
     //Variable for date time
     static public LocalDate checkinDate;
@@ -183,6 +180,20 @@ public class CheckoutController implements Initializable {
             r.calculateSubPayment(LocalDateTime.of(checkinDate, checkinTime), LocalDateTime.of(checkoutDate, checkoutTime));
         }
         tbvRoomsBooked.setItems(FXCollections.observableArrayList(ck.getCheckinOutRooms()));
+
+        //Initialize detail room payment table
+        tbvDetail_colPriceType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tbvDetail_colPeriod.setCellValueFactory(new PropertyValueFactory<>("time"));
+        tbvDetail_colToMoney.setCellValueFactory(new PropertyValueFactory<>("toMoney"));
+        tbvDetail_colToMoney.setCellFactory(tc -> new TableCell<DetailRoomPayment, Double>() {
+            @Override
+            protected void updateItem(Double payment, boolean empty) {
+                super.updateItem(payment, empty);
+                if (empty) setText(null);
+                else setText(String.format("%,.0f", payment));
+            }
+        });
+        tbvDetailRoomPayment.setItems(FXCollections.observableArrayList(ck.getCheckinOutRooms().get(0).getDetailSubPayment()));
 
         //Calculate roomPayment from rooms in table
         roomPayment = 0.0;
@@ -370,6 +381,7 @@ public class CheckoutController implements Initializable {
             r.calculateSubPayment(LocalDateTime.of(checkinDate, checkinTime), LocalDateTime.of(checkoutDate, checkoutTime));
         }
         tbvRoomsBooked.refresh();
+        tbvDetailRoomPayment.setItems(FXCollections.observableArrayList(ck.getCheckinOutRooms().get(0).getDetailSubPayment()));
 
         //Recalculate roomPayment from rooms in table
         roomPayment = 0.0;

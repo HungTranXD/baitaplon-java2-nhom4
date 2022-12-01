@@ -1,9 +1,6 @@
 package javafx.checkin;
 
-import entities.CheckinOut;
-import entities.Customer;
-import entities.Room;
-import entities.Service;
+import entities.*;
 import enums.RepoType;
 import factory.Factory;
 import impls.CheckinOutRepository;
@@ -25,6 +22,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import javax.xml.soap.Detail;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,27 +39,31 @@ public class CheckinController implements Initializable {
     /* ----------------------------------------------------------- */
     @FXML
     private DatePicker dpBookingDateStart;
-
     @FXML
     private TextField txtBookingHourStart;
-
     @FXML
     private DatePicker dpBookingDateEnd;
-
     @FXML
     private TextField txtBookingHourEnd;
-
     @FXML
     private TableView<Room> tbvRoomsBooked;
-
     @FXML
     private TableColumn<Room, String> roomBookedNumberCol;
-
+    @FXML
+    private TableColumn<Room, String> roomBookedFloorCol;
     @FXML
     private TableColumn<Room, String> roomBookedTypeCol;
-
     @FXML
     private TableColumn<Room, Double> roomBookedMoneyCol;
+
+    @FXML
+    private TableView<DetailRoomPayment> tbvDetailRoomPayment;
+    @FXML
+    private TableColumn<DetailRoomPayment, String> tbvDetail_colPriceType;
+    @FXML
+    private TableColumn<DetailRoomPayment, String> tbvDetail_colPeriod;
+    @FXML
+    private TableColumn<DetailRoomPayment, Double> tbvDetail_colToMoney;
 
     //Variable for date time
     private LocalDate checkinDate;
@@ -117,6 +119,7 @@ public class CheckinController implements Initializable {
 
         //Initialize room table
         roomBookedNumberCol.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+        roomBookedFloorCol.setCellValueFactory(new PropertyValueFactory<>("floor"));
         roomBookedTypeCol.setCellValueFactory(new PropertyValueFactory<>("typeName"));
         roomBookedMoneyCol.setCellValueFactory(new PropertyValueFactory<>("subPayment"));
         roomBookedMoneyCol.setCellFactory(tc -> new TableCell<Room, Double>() {
@@ -128,6 +131,21 @@ public class CheckinController implements Initializable {
             }
         });
         tbvRoomsBooked.setItems(roomsSelected);
+
+        //Initialize detail room payment table
+        tbvDetail_colPriceType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tbvDetail_colPeriod.setCellValueFactory(new PropertyValueFactory<>("time"));
+        tbvDetail_colToMoney.setCellValueFactory(new PropertyValueFactory<>("toMoney"));
+        tbvDetail_colToMoney.setCellFactory(tc -> new TableCell<DetailRoomPayment, Double>() {
+            @Override
+            protected void updateItem(Double payment, boolean empty) {
+                super.updateItem(payment, empty);
+                if (empty) setText(null);
+                else setText(String.format("%,.0f", payment));
+            }
+        });
+        tbvDetailRoomPayment.setItems(FXCollections.observableArrayList(roomsSelected.get(0).getDetailSubPayment()));
+
     }
 
 
@@ -178,6 +196,7 @@ public class CheckinController implements Initializable {
         }
         lbRoomPayment.setText(String.format("%,.0f", roomPayment));
         tbvRoomsBooked.refresh();
+        tbvDetailRoomPayment.setItems(FXCollections.observableArrayList(roomsSelected.get(0).getDetailSubPayment()));
     }
     @FXML
     void createCheckin(ActionEvent event) {
